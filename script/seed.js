@@ -35,7 +35,7 @@ async function seed() {
       {email: 'cody@email.com', password: '123'}
       // {include: [UserTeam]}
     )
-    const team = await Team.create({Id: 1})
+    const team = await Team.create({name: 'Myself'})
 
     const collection = await Collection.create({teamId: 1})
 
