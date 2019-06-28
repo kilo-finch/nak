@@ -1,18 +1,56 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Links, Team, Collection} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-  ])
+  // const users = await Promise.all([
+  //   User.create(
+  //     {email: 'cody@email.com', password: '123'},
+  //     {include: [UserTeam]}
+  //   ),
+  //   User.create({email: 'murphy@email.com', password: '123'})
+  // ])
+  // const oneOfEverything = await Promise.all([
+  //   User.create(
+  //     {email: 'cody@email.com', password: '123'},
+  //     {include: [UserTeam]}
+  //   ),
+  //   Team.create({Id: 1}),
+  //   Collection.create({teamId: 1}),
+  //   Links.create({
+  //     orderId: 1,
+  //     description: 'blah',
+  //     title: 'ok',
+  //     favicon: 'www.google.com',
+  //     collectionId: 1
+  //   })
+  // ])
 
-  console.log(`seeded ${users.length} users`)
+  const createSomething = async () => {
+    const user = await User.create(
+      {email: 'cody@email.com', password: '123'}
+      // {include: [UserTeam]}
+    )
+    const team = await Team.create({Id: 1})
+
+    const collection = await Collection.create({teamId: 1})
+
+    const links = await Links.create({
+      orderId: 1,
+      description: 'blah',
+      title: 'ok',
+      favicon: 'www.google.com',
+      collectionId: 1
+    })
+
+    team.setUsers(user)
+  }
+  // console.log(`seeded ${users.length} users`)
+  createSomething()
   console.log(`seeded successfully`)
 }
 
@@ -28,7 +66,7 @@ async function runSeed() {
     process.exitCode = 1
   } finally {
     console.log('closing db connection')
-    await db.close()
+    // await db.close()
     console.log('db connection closed')
   }
 }
