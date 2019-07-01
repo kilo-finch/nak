@@ -1,6 +1,8 @@
 const crypto = require('crypto')
 const Sequelize = require('sequelize')
 const db = require('../db')
+const Team = require('./team')
+const Collection = require('./collection')
 
 const User = db.define('user', {
   googleId: {
@@ -72,3 +74,17 @@ User.beforeUpdate(setSaltAndPassword)
 User.beforeBulkCreate(users => {
   users.forEach(setSaltAndPassword)
 })
+
+const createTeamAndCollection = async (user, options) => {
+  try {
+    const transaction = options.transaction
+    const team = await Team.create({userPersonalCollection: true})
+    await team.setUsers(user, {transaction})
+    const collection = await Collection.create({userPersonalCollection: true})
+    await team.setCollections(collection)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+User.afterCreate(createTeamAndCollection)
