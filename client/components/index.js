@@ -6,3 +6,6 @@
 export {default as Navbar} from './navbar'
 export {default as UserHome} from './user-home'
 export {Login, Signup} from './auth-form'
+export {default as LinkCard} from './linkCard'
+export {default as Collection} from './collection'
+export {default as LinkForm} from './linkForm'
