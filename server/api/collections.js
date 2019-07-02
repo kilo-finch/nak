@@ -21,28 +21,30 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  try {
-    const userId = req.user.id
-    const {description, title, url, favicon, orderId} = req.body
+  if (req.user) {
+    try {
+      const userId = req.user.id
+      const {description, title, url, favicon, orderId} = req.body
 
-    const userTeam = await Team.findOne({
-      through: {where: userId}
-    })
+      const userTeam = await Team.findOne({
+        through: {where: userId}
+      })
 
-    const userCollection = await Collection.findOne({
-      where: {teamId: +userTeam.id}
-    })
-    const link = {
-      description,
-      title,
-      url,
-      favicon,
-      collectionId: userCollection.id,
-      orderId
+      const userCollection = await Collection.findOne({
+        where: {teamId: +userTeam.id}
+      })
+      const link = {
+        description,
+        title,
+        url,
+        favicon,
+        collectionId: userCollection.id,
+        orderId
+      }
+      const newLink = await Links.create(link)
+      res.send(newLink)
+    } catch (error) {
+      next(error)
     }
-    const newLink = await Links.create(link)
-    res.send(newLink)
-  } catch (error) {
-    next(error)
   }
 })
