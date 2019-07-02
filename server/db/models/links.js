@@ -8,6 +8,10 @@ const Links = db.define('links', {
     type: Sequelize.TEXT,
     allowNull: false
   },
+  url: {
+    type: Sequelize.TEXT,
+    allowNull: false
+  },
   favicon: {type: Sequelize.STRING, allowNull: false}
 })
 
