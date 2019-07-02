@@ -1,6 +1,6 @@
-const User = require('./user')
 const Team = require('./team')
 const Collection = require('./collection')
+const User = require('./user')
 const Links = require('./links')
 
 /**
