@@ -105,7 +105,7 @@ const startListening = () => {
   require('./socket')(io)
 }
 
-// const syncDb = () => db.sync({force: true})
+// const syncDb = () => db.sync({ force: true })
 const syncDb = () => db.sync()
 
 async function bootApp() {
