@@ -22,14 +22,12 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    console.log('req user', req.user)
     const userId = req.user.id
     const {description, title, url, favicon, orderId} = req.body
 
     const userTeam = await Team.findOne({
       through: {where: userId}
     })
-    console.log('userTeam', userTeam)
 
     const userCollection = await Collection.findOne({
       where: {teamId: +userTeam.id}
