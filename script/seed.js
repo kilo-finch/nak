@@ -43,8 +43,9 @@ async function seed() {
       orderId: 1,
       description: 'blah',
       title: 'ok',
-      favicon: 'www.google.com',
-      collectionId: 1
+      favicon: 'www.google.com/favicon.ico',
+      collectionId: 1,
+      url: 'www.google.com'
     })
 
     team.setUsers(user)
