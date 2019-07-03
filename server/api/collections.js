@@ -9,9 +9,22 @@ router.get('/', async (req, res, next) => {
         where: {
           id: +req.user.id
         },
-        include: {model: Team, include: {model: Collection, include: Links}}
+        include: {
+          model: Team,
+          include: {
+            model: Collection,
+            include: Links
+          }
+        }
       })
-      res.send(allCollectionsFromAllTeams)
+      const filteredData = allCollectionsFromAllTeams[0].teams.map(team => {
+        return {
+          teamId: team.id,
+          teamName: team.name,
+          collections: team.collections
+        }
+      })
+      res.send(filteredData)
     } catch (error) {
       next(error)
     }

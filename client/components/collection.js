@@ -1,8 +1,12 @@
 import React, {Component} from 'react'
 import {LinkCard, LinkForm} from './index'
 import {connect} from 'react-redux'
+import {allCollectionsThunk} from '../store'
 
-export default class Collection extends Component {
+class Collection extends Component {
+  componentDidMount() {
+    this.props.getAllCollections()
+  }
   render() {
     const {links} = this.props
     return (
@@ -25,8 +29,14 @@ export default class Collection extends Component {
 
 const mapState = state => {
   return {
-    links: state.links
+    collections: state.collections.allCollections
   }
 }
 
-const mapProps = dispatch => ({})
+const mapDispatch = dispatch => {
+  return {
+    getAllCollections: () => dispatch(allCollectionsThunk())
+  }
+}
+
+export default connect(mapState, mapDispatch)(Collection)

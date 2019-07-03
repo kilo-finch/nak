@@ -44,7 +44,8 @@ async function seed() {
       description: 'blah',
       title: 'ok',
       favicon: 'www.google.com',
-      collectionId: 1
+      collectionId: 1,
+      url: 'www.google.com'
     })
 
     team.setUsers(user)
