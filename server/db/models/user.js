@@ -78,9 +78,15 @@ User.beforeBulkCreate(users => {
 const createTeamAndCollection = async (user, options) => {
   try {
     const transaction = options.transaction
-    const team = await Team.create({userPersonalCollection: true})
+    const team = await Team.create({
+      name: `${user.firstName}'s Personal Collections`,
+      userPersonalCollection: true
+    })
     await team.setUsers(user, {transaction})
-    const collection = await Collection.create({userPersonalCollection: true})
+    const collection = await Collection.create({
+      name: 'Default Collection',
+      userPersonalCollection: true
+    })
     await team.setCollections(collection)
   } catch (e) {
     console.error(e)

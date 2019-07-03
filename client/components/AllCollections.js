@@ -1,27 +1,24 @@
 import React, {Component} from 'react'
-import {LinkCard, LinkForm} from './index'
+import {LinkCard, LinkForm, TeamsCollection} from './index'
 import {connect} from 'react-redux'
 import {allCollectionsThunk} from '../store'
 
-class Collection extends Component {
+class AllCollections extends Component {
   componentDidMount() {
     this.props.getAllCollections()
   }
   render() {
-    const {links} = this.props
     return (
       <div style={{border: '2px black solid'}}>
         <div>
-          {links ? (
-            links.map(link => <LinkCard props={link} key={link.id} />)
+          {this.props.collections ? (
+            this.props.collections.map((teamCollections, idx) => (
+              <TeamsCollection allTeamCollections={teamCollections} key={idx} />
+            ))
           ) : (
-            <h3>
-              You have no links saved in your collection! Add a link to get
-              started.
-            </h3>
+            <h3>Still Loading</h3>
           )}
         </div>
-        <LinkForm />
       </div>
     )
   }
@@ -39,4 +36,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Collection)
+export default connect(mapState, mapDispatch)(AllCollections)
