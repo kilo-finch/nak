@@ -12,7 +12,7 @@ const Links = db.define('links', {
     type: Sequelize.TEXT,
     allowNull: false
   },
-  favicon: {type: Sequelize.STRING, allowNull: false}
+  favicon: {type: Sequelize.TEXT, defaultValue: '../../../public/favicon.ico'}
 })
 
 module.exports = Links
