@@ -43,7 +43,7 @@ async function seed() {
       orderId: 1,
       description: 'blah',
       title: 'ok',
-      favicon: 'www.google.com',
+      favicon: 'www.google.com/favicon.ico',
       collectionId: 1,
       url: 'www.google.com'
     })
