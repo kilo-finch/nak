@@ -7,9 +7,11 @@ const TeamsCollection = props => {
   return (
     <div style={{border: '2px black solid', height: '800px'}}>
       <div>
-        <h3>{allTeamCollections.teamName}</h3>
-        {allTeamCollections.collections.map(collection => (
-          <SingleCollection collection={collection} key={collection.id} />
+        {allTeamCollections.map(collection => (
+          <div key={collection.id}>
+            <h3>{collection.name}</h3>
+            <SingleCollection collection={collection} />
+          </div>
         ))}
       </div>
     </div>

@@ -4,27 +4,27 @@ import history from '../history'
 /**
  * INITIAL STATE
  */
-const initialState = {allCollections: []}
+const initialState = {selectedCollection: []}
 /**
  * ACTION TYPES
  */
-const GOT_ALL_COLLECTIONS = 'GOT_ALL_COLLECTIONS'
+const GOT_SELECTED_COLLECTION = 'GOT_SELECTED_COLLECTION'
 
 /**
  * ACTION CREATORS
  */
-const gotAllCollections = allCollections => ({
-  type: GOT_ALL_COLLECTIONS,
-  allCollections
+const gotSelectedCollection = selectedCollection => ({
+  type: GOT_SELECTED_COLLECTION,
+  selectedCollection
 })
 
 /**
  * THUNK CREATORS
  */
-export const allCollectionsThunk = () => async dispatch => {
+export const selectedCollectionThunk = teamId => async dispatch => {
   try {
-    const res = await axios.get('api/collections')
-    dispatch(gotAllCollections(res.data))
+    const res = await axios.get(`api/collections/${teamId}`)
+    dispatch(gotSelectedCollection(res.data))
   } catch (error) {
     throw error
   }
@@ -34,8 +34,8 @@ export const allCollectionsThunk = () => async dispatch => {
  */
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GOT_ALL_COLLECTIONS:
-      return {...state, allCollections: [...action.allCollections]}
+    case GOT_SELECTED_COLLECTION:
+      return {...state, selectedCollection: [...action.selectedCollection]}
     default:
       return state
   }

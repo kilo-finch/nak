@@ -1,24 +1,45 @@
 import React, {Component} from 'react'
 import {LinkCard, LinkForm, TeamsCollection} from './index'
 import {connect} from 'react-redux'
-import {allCollectionsThunk} from '../store'
+import {selectedCollectionThunk, allTeamsThunk} from '../store'
+import {Link, Route} from 'react-router-dom'
 
 class AllCollections extends Component {
-  componentDidMount() {
-    this.props.getAllCollections()
+  constructor() {
+    super()
+    this.state = {selectedCollection: 0}
+    this.selectCollection = this.selectCollection.bind(this)
   }
+
+  componentDidMount() {
+    this.props.getAllTeams()
+  }
+
+  selectCollection(selection) {
+    this.props.getSelectedCollection(selection)
+    this.setState({selectedCollection: selection})
+  }
+
   render() {
     return (
-      <div style={{border: '2px black solid'}}>
-        <div>
-          {this.props.collections ? (
-            this.props.collections.map((teamCollections, idx) => (
-              <TeamsCollection allTeamCollections={teamCollections} key={idx} />
-            ))
-          ) : (
-            <h3>Still Loading</h3>
-          )}
-        </div>
+      <div>
+        {this.props.teams ? (
+          <div>
+            {this.props.teams.map(team => (
+              <button
+                onClick={() => this.selectCollection(team.id)}
+                key={team.id}
+              >{`${team.name}`}</button>
+            ))}
+          </div>
+        ) : (
+          <h3>Still Loading</h3>
+        )}
+        {this.props.collections ? (
+          <TeamsCollection allTeamCollections={this.props.collections} />
+        ) : (
+          <h1>Still Loading</h1>
+        )}
       </div>
     )
   }
@@ -26,13 +47,15 @@ class AllCollections extends Component {
 
 const mapState = state => {
   return {
-    collections: state.collections.allCollections
+    collections: state.collections.selectedCollection,
+    teams: state.teams.allTeams
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    getAllCollections: () => dispatch(allCollectionsThunk())
+    getSelectedCollection: teamId => dispatch(selectedCollectionThunk(teamId)),
+    getAllTeams: () => dispatch(allTeamsThunk())
   }
 }
 
