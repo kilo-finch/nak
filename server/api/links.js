@@ -45,27 +45,14 @@ router.put('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   if (req.user) {
     try {
-      const userId = req.user.id
-      const userTeams = await Team.findAll({
-        include: {
-          model: User,
-          where: {id: userId}
-        }
-      })
-      const userPersonalCollection = await Collection.findOne({
-        where: {
-          userPersonalCollection: true,
-          teamId: userTeams.map(team => team.id)
-        }
-      })
       const formattedLinkData = req.body.map(tab => {
-        const {description, title, url, favicon, orderId} = tab
+        const {description, title, url, favicon, orderId, collectionId} = tab
         return {
           description,
           title,
           url,
           favicon,
-          collectionId: userPersonalCollection.id,
+          collectionId,
           orderId
         }
       })
