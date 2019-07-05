@@ -46,15 +46,18 @@ router.post('/', async (req, res, next) => {
   if (req.user) {
     try {
       const userId = req.user.id
-
-      const userTeam = await Team.findOne({
-        through: {where: userId}
+      const userTeams = await Team.findAll({
+        include: {
+          model: User,
+          where: {id: userId}
+        }
       })
-
-      const userCollection = await Collection.findOne({
-        where: {teamId: +userTeam.id}
+      const userPersonalCollection = await Collection.findOne({
+        where: {
+          userPersonalCollection: true,
+          teamId: userTeams.map(team => team.id)
+        }
       })
-
       const formattedLinkData = req.body.map(tab => {
         const {description, title, url, favicon, orderId} = tab
         return {
@@ -62,11 +65,10 @@ router.post('/', async (req, res, next) => {
           title,
           url,
           favicon,
-          collectionId: userCollection.id,
+          collectionId: userPersonalCollection.id,
           orderId
         }
       })
-
       const serverLinkArr = await Links.bulkCreate(formattedLinkData)
       res.send(serverLinkArr)
     } catch (error) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Collection} from './index'
+import {AllCollections} from './index'
 
 /**
  * COMPONENT
@@ -12,7 +12,7 @@ export const UserHome = props => {
   return (
     <div>
       <h3>Welcome, {`${firstName}`}</h3>
-      <Collection />
+      <AllCollections />
     </div>
   )
 }
