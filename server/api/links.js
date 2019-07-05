@@ -1,5 +1,9 @@
 const router = require('express').Router()
-const {Collection, Links, Team, User} = require('../db/models')
+const {Links} = require('../db/models')
+const {Fraction} = require('../utils')
+const Sequelize = require('sequelize')
+const op = Sequelize.Op
+
 module.exports = router
 
 router.delete('/', async (req, res, next) => {
@@ -45,16 +49,39 @@ router.put('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   if (req.user) {
     try {
-      const formattedLinkData = req.body.map(tab => {
-        const {description, title, url, favicon, orderId, collectionId} = tab
+      let formattedLinkData = req.body.map(tab => {
+        const {description, title, url, favicon, collectionId} = tab
         return {
           description,
           title,
           url,
           favicon,
-          collectionId,
-          orderId
+          collectionId
         }
+      })
+
+      const maxFloat = await Links.findOne({
+        where: formattedLinkData[0],
+        limit: 1,
+        order: [['orderFloat', 'DESC']]
+      })
+      let firstFraction
+
+      if (!maxFloat) {
+        firstFraction = new Fraction()
+      } else {
+        firstFraction = new Fraction(maxFloat.orderFraction)
+        firstFraction = firstFraction.insertLast()
+      }
+
+      formattedLinkData = formattedLinkData.map((el, i) => {
+        const newLink = {
+          ...el,
+          orderFloat: firstFraction.toFloat(),
+          orderFraction: firstFraction.toString()
+        }
+        firstFraction = firstFraction.insertLast()
+        return newLink
       })
       const serverLinkArr = await Links.bulkCreate(formattedLinkData)
       res.send(serverLinkArr)
@@ -63,3 +90,46 @@ router.post('/', async (req, res, next) => {
     }
   }
 })
+
+// router.put('/reorder', async (req, res, next) => {
+//   if (req.user) {
+//     let answer
+//     try {
+//       const {idSource, idTarget, operation} = req.body
+//       if (operation === 'first') {
+//         const first = await Links.findOne({
+//           where: {collectionId: +req.body.collectionId},
+//           limit: 1,
+//           order: [['orderFloat', 'ACS']]
+//         })
+//         const newOrder = new Fraction(first.orderFraction).insertFirst()
+//         const orderFloat = newOrder.toFloat()
+//         const orderFraction = newOrder.toString()
+//         answer = await first.update({orderFloat, orderFraction})
+//       } else if (operation === 'last') {
+//         const last = await Links.findOne({
+//           where: {collectionId: +req.body.collectionId},
+//           limit: 1,
+//           order: [['orderFloat', 'DESC']]
+//         })
+//         const newOrder = new Fraction(last.orderFraction).insertLast()
+//         const orderFloat = newOrder.toFloat()
+//         const orderFraction = newOrder.toString()
+//         answer = await last.update({orderFloat, orderFraction})
+//       } else {
+//         idSource = +idSource
+//         idTarget = +idTarget
+//         const links = await Links.findAll({
+//           where: {id: {[op.in]: [idSource, idTarget]}}
+//         })
+//         // links.map(el=>)
+//       }
+
+//       res.send(answer)
+//     } catch (error) {
+//       next(error)
+//     }
+//   } else {
+//     res.sendStatus(403)
+//   }
+// })
