@@ -21,7 +21,6 @@ class AllCollections extends Component {
   }
 
   render() {
-    console.log(this.props.collection)
     return (
       <div>
         {this.props.teams ? (
@@ -36,12 +35,8 @@ class AllCollections extends Component {
         ) : (
           <h3>Still Loading</h3>
         )}
-        {this.props.collection ? (
-          // <TeamsCollection
-          //   allTeamCollections={this.props.collection[0]}
-          //   teamName={this.props.teams[this.state.selectedCollection].name}
-          // />
-          <h1>Coming Soon!</h1>
+        {this.props.collections ? (
+          <TeamsCollection allTeamCollections={this.props.collections} />
         ) : (
           <h1>Still Loading</h1>
         )}
@@ -52,7 +47,7 @@ class AllCollections extends Component {
 
 const mapState = state => {
   return {
-    collection: state.collections.selectedCollection,
+    collections: state.collections.selectedCollection,
     teams: state.teams.allTeams
   }
 }

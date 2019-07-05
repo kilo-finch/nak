@@ -23,7 +23,6 @@ const gotSelectedCollection = selectedCollection => ({
  */
 export const selectedCollectionThunk = teamId => async dispatch => {
   try {
-    console.log(teamId)
     const res = await axios.get(`api/collections/${teamId}`)
     dispatch(gotSelectedCollection(res.data))
   } catch (error) {

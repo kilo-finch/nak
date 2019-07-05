@@ -7,8 +7,8 @@ export default function linkCard(props) {
     <div>
       <a target="_blank" href={`${link.url}`}>
         <div>
-          <h4 className="link-title">{link.title}</h4>
           <img src={link.favicon} alt="favicon" />
+          <h4 className="link-title">{link.title}</h4>
           <div className="description-tag">
             <p>{link.description}</p>
           </div>

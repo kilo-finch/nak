@@ -7,6 +7,9 @@ router.get('/:teamId', async (req, res, next) => {
     console.log(req.params)
     try {
       const selectedCollection = await Collection.findAll({
+        include: {
+          model: Links
+        },
         where: {
           teamId: req.params.teamId
         }
