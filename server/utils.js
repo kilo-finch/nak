@@ -32,6 +32,12 @@ const Fraction = class {
   toFloat() {
     return this.value.numerator / this.value.denominator
   }
+
+  static insertMiddleStatic(first, second) {
+    const firstFraction = new Fraction(first)
+    const secondFraction = new Fraction(second)
+    return firstFraction.insertMiddle(secondFraction)
+  }
 }
 
 module.exports = {Fraction}
