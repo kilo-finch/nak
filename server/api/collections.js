@@ -4,7 +4,6 @@ module.exports = router
 
 router.get('/:teamId', async (req, res, next) => {
   if (req.user) {
-    console.log(req.params)
     try {
       const selectedCollection = await Collection.findAll({
         include: {
@@ -12,7 +11,8 @@ router.get('/:teamId', async (req, res, next) => {
         },
         where: {
           teamId: req.params.teamId
-        }
+        },
+        order: [[{model: Links}, 'orderFloat', 'ASC']]
       })
       res.send(selectedCollection)
     } catch (error) {
