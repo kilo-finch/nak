@@ -61,7 +61,7 @@ router.post('/', async (req, res, next) => {
       })
 
       const maxFloat = await Links.findOne({
-        where: formattedLinkData[0],
+        where: {collectionId: formattedLinkData.collectionId},
         limit: 1,
         order: [['orderFloat', 'DESC']]
       })
