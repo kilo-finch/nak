@@ -2,7 +2,8 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Links = db.define('links', {
-  orderId: {type: Sequelize.INTEGER},
+  orderFloat: {type: Sequelize.FLOAT},
+  orderFraction: {type: Sequelize.STRING},
   description: {type: Sequelize.TEXT},
   title: {
     type: Sequelize.TEXT,
