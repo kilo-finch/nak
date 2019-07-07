@@ -29,6 +29,22 @@ export const selectedCollectionThunk = teamId => async dispatch => {
     throw error
   }
 }
+
+export const updateCollectionThunk = (
+  collectionName,
+  collectionId,
+  teamId
+) => async dispatch => {
+  try {
+    const res = await axios.put(`api/collections/${collectionId}`, {
+      collectionName
+    })
+    dispatch(selectedCollectionThunk(teamId))
+  } catch (error) {
+    throw error
+  }
+}
+
 /**
  * REDUCER
  */
