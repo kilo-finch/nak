@@ -59,30 +59,15 @@ router.post('/', async (req, res, next) => {
           collectionId
         }
       })
-
-      const maxFloat = await Links.findOne({
-        where: {collectionId: formattedLinkData.collectionId},
-        limit: 1,
-        order: [['orderFloat', 'DESC']]
-      })
-      let firstFraction
-
-      if (!maxFloat) {
-        firstFraction = new Fraction()
-      } else {
-        firstFraction = new Fraction(maxFloat.orderFraction)
-        firstFraction = firstFraction.insertLast()
-      }
-
-      formattedLinkData = formattedLinkData.map(el => {
-        const newLink = {
-          ...el,
-          orderFloat: firstFraction.toFloat(),
-          orderFraction: firstFraction.toString()
-        }
-        firstFraction = firstFraction.insertLast()
-        return newLink
-      })
+      // formattedLinkData = formattedLinkData.map(el => {
+      //   const newLink = {
+      //     ...el,
+      //     // orderFloat: firstFraction.toFloat(),
+      //     // orderFraction: firstFraction.toString()
+      //   }
+      //   // firstFraction = firstFraction.insertLast()
+      //   return newLink
+      // })
       const serverLinkArr = await Links.bulkCreate(formattedLinkData)
       res.send(serverLinkArr)
     } catch (error) {
@@ -119,88 +104,97 @@ router.post('/', async (req, res, next) => {
 // eslint-disable-next-line max-statements
 router.put('/reorder', async function(req, res, next) {
   if (req.user) {
-    let answer
     try {
-      let {idSource, idTarget, operation} = req.body
-      idSource = +idSource
-      idTarget = +idTarget
-
-      const source = await Links.findByPk(idSource)
-
-      //insert to the beginning
-      if (operation === 'first') {
-        const first = await Links.findOne({
-          limit: 1,
-          order: [['orderFloat', 'ASC']]
-        })
-        const newOrder = new Fraction(first.orderFraction).insertFirst()
-        const orderFloat = newOrder.toFloat()
-        const orderFraction = newOrder.toString()
-        answer = await source.update({orderFloat, orderFraction})
-        // insert to end
-      } else if (operation === 'last') {
-        const last = await Links.findOne({
-          limit: 1,
-          order: [['orderFloat', 'DESC']]
-        })
-        const newOrder = new Fraction(last.orderFraction).insertLast()
-        const orderFloat = newOrder.toFloat()
-        const orderFraction = newOrder.toString()
-        answer = await source.update({orderFloat, orderFraction})
-        //insert to middle
-      } else {
-        const target = await Links.findByPk(idTarget)
-        //if source is pre to target
-        if (source.orderFloat > target.orderFloat) {
-          const prev = await Links.findOne({
-            where: {orderFloat: {[op.lt]: target.orderFloat}},
-            limit: 1,
-            order: [['orderFloat', 'DESC']]
-          })
-          let newOrder
-          let first
-          if (!prev) {
-            first = await Links.findOne({
-              limit: 1,
-              order: [['orderFloat', 'ASC']]
-            })
-            newOrder = new Fraction(first.orderFraction).insertFirst()
-          } else {
-            newOrder = Fraction.insertMiddleStatic(
-              target.orderFraction,
-              prev.orderFraction
-            )
-          }
-          const orderFloat = newOrder.toFloat()
-          const orderFraction = newOrder.toString()
-          answer = await source.update({orderFloat, orderFraction})
-          // if source is after target
-        } else {
-          const nextAfterTarget = await Links.findOne({
-            where: {orderFloat: {[op.gt]: target.orderFloat}},
-            limit: 1,
-            order: [['orderFloat', 'ASC']]
-          })
-          let newOrder
-          let last
-          if (!nextAfterTarget) {
-            last = await Links.findOne({
-              limit: 1,
-              order: [['orderFloat', 'DESC']]
-            })
-            newOrder = new Fraction(last.orderFraction).insertLast()
-          } else {
-            newOrder = Fraction.insertMiddleStatic(
-              target.orderFraction,
-              nextAfterTarget.orderFraction
-            )
-          }
-          const orderFloat = newOrder.toFloat()
-          const orderFraction = newOrder.toString()
-          answer = await source.update({orderFloat, orderFraction})
-        }
-      }
+      console.log('try :', req.body)
+      // let {idSource, idTarget, operation, collectionId} = req.body
+      const idSource = +req.body.idSource
+      const idTarget = +req.body.idTarget
+      const collectionId = +req.body.collectionId
+      const answer = await Links.changeOrder(idSource, idTarget, collectionId)
       res.send(answer)
+      //   const source = await Links.findByPk(idSource)
+
+      //   //insert to the beginning
+      //   if (operation === 'first') {
+      //     const first = await Links.findOne({
+      //       where: {collectionId},
+      //       limit: 1,
+      //       order: [['orderFloat', 'ASC']]
+      //     })
+      //     const newOrder = new Fraction(first.orderFraction).insertFirst()
+      //     const orderFloat = newOrder.toFloat()
+      //     const orderFraction = newOrder.toString()
+      //     answer = await source.update({orderFloat, orderFraction})
+      //     // insert to end
+      //   } else if (operation === 'last') {
+      //     const last = await Links.findOne({
+      //       where:{collectionId},
+      //       limit: 1,
+      //       order: [['orderFloat', 'DESC']]
+      //     })
+      //     const newOrder = new Fraction(last.orderFraction).insertLast()
+      //     const orderFloat = newOrder.toFloat()
+      //     const orderFraction = newOrder.toString()
+      //     answer = await source.update({orderFloat, orderFraction})
+      //     //insert to middle
+      //   } else {
+      //     const target = await Links.findByPk(idTarget)
+      //     //if source is pre to target
+      //     if (source.orderFloat > target.orderFloat) {
+      //       const prev = await Links.findOne({
+      //         where: {orderFloat: {[op.lt]: target.orderFloat}, collectionId},
+      //         limit: 1,
+      //         order: [['orderFloat', 'DESC']]
+      //       })
+      //       let newOrder
+      //       let first
+      //       if (!prev) {
+      //         first = await Links.findOne({
+      //           where: {collectionId},
+      //           limit: 1,
+      //           order: [['orderFloat', 'ASC']]
+      //         })
+      //         newOrder = new Fraction(first.orderFraction).insertFirst()
+      //       } else {
+      //         newOrder = Fraction.insertMiddleStatic(
+      //           target.orderFraction,
+      //           prev.orderFraction
+      //         )
+      //       }
+      //       const orderFloat = newOrder.toFloat()
+      //       const orderFraction = newOrder.toString()
+      //       answer = await source.update({orderFloat, orderFraction})
+      //       // if source is after target
+      //     } else if (source.orderFloat < target.orderFloat ) {
+      //       const nextAfterTarget = await Links.findOne({
+      //         where: {orderFloat: {[op.gt]: target.orderFloat}},
+      //         limit: 1,
+      //         order: [['orderFloat', 'ASC']]
+      //       })
+      //       let newOrder
+      //       let last
+      //       if (!nextAfterTarget) {
+      //         last = await Links.findOne({
+      //           where: {collectionId},
+      //           limit: 1,
+      //           order: [['orderFloat', 'DESC']]
+      //         })
+      //         newOrder = new Fraction(last.orderFraction).insertLast()
+      //       } else {
+      //         newOrder = Fraction.insertMiddleStatic(
+      //           target.orderFraction,
+      //           nextAfterTarget.orderFraction
+      //         )
+      //       }
+      //       const orderFloat = newOrder.toFloat()
+      //       const orderFraction = newOrder.toString()
+      //       answer = await source.update({orderFloat, orderFraction})
+      //     // source === target, don't do anything
+      //     } else {
+      //       answer = {}
+      //     }
+      //   }
+      //   res.send(answer)
     } catch (error) {
       next(error)
     }

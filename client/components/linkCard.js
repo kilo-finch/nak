@@ -1,7 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {flow} from 'lodash'
-import {moveLinks} from '../store'
+import {moveLinks, nullTargetId} from '../store'
+import axios from 'axios'
 
 import {
   DragSource,
@@ -14,19 +15,34 @@ import {
   // DragSourceConnector,
   // DragSourceMonitor
 } from 'react-dnd'
+import Axios from 'axios'
 
 const Types = {
   CARD: 'CARD'
 }
 
+// const dropDB = (sourceId, targetId) => {
+
+// }
+
 const cardSource = {
   beginDrag: props => ({id: props.link.id, index: props.index}),
   endDrag(props, monitor, component) {
-    // if (!monitor.didDrop()) {
-    // }
-    // const item = monitor.getItem()
-    // const dropResult = monitor.getDropResult()
-    // props.moveCard(props.index, item.index)
+    if (!monitor.didDrop()) {
+      return
+    }
+    const idSource = monitor.getItem().id
+    // const idTarget = props.link.id
+    const idTarget = props.targetId
+    const collectionId = props.collectionId
+    console.log({idSource, idTarget})
+    if (idSource !== idTarget) {
+      axios
+        .put('/api/links/reorder', {idSource, idTarget, collectionId})
+        .then(() => props.nullTargetId())
+    }
+
+    // dropDB(dragId, hoverId)
     // CardAction.moveCardToList(item.id, dropResult.listId)
   }
 }
@@ -135,13 +151,19 @@ function linkCard(props) {
 
 const mapDispatch = dispatch => ({
   moveLinks: (sourceId, targetId, collectionId) =>
-    dispatch(moveLinks(sourceId, targetId, collectionId))
+    dispatch(moveLinks(sourceId, targetId, collectionId)),
+  nullTargetId: () => dispatch(nullTargetId())
+})
+
+const mapState = state => ({
+  targetId: state.collections.dnd.targetId,
+  collectionId: state.collections.dnd.collectionId
 })
 
 export default flow(
   DragSource(Types.CARD, cardSource, collect),
   DropTarget(Types.CARD, cardTarget, connectTarget),
-  connect(null, mapDispatch)
+  connect(mapState, mapDispatch)
 )(linkCard)
 
 //   const drag1 = DragSource(Types.CARD, cardSource, collect)(linkCard)
