@@ -53,6 +53,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+
 router.post('/:teamId', async (req, res, next) => {
   if (req.user) {
     try {
@@ -67,3 +68,4 @@ router.post('/:teamId', async (req, res, next) => {
     res.sendStatus(403)
   }
 })
+

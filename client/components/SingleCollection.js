@@ -1,11 +1,28 @@
 import React, {Component} from 'react'
-import {LinkCard} from './index'
-import {connect} from 'react-redux'
+
+import {LinkCard, LinkForm} from './index'
+
+const openAll = (event, links) => {
+  links.forEach(link => {
+    event.preventDefault()
+    window.open(link.url, '_blank')
+  })
+}
+
+
 
 const SingleCollection = props => {
   const {collection} = props
   return (
     <div style={{border: '2px black solid', height: '400px'}}>
+      <div>
+        <button
+          type="button"
+          onClick={event => openAll(event, collection.links)}
+        >
+          Open All
+        </button>
+      </div>
       <div>
         {collection.links ? (
           collection.links.map(link => <LinkCard link={link} key={link.id} />)
