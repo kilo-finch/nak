@@ -79,22 +79,12 @@ router.post('/', async (req, res, next) => {
 router.put('/reorder', async function(req, res, next) {
   if (req.user) {
     try {
-      // console.log('req.body :', req.body);
-      // const idSource = +req.body.idSource
-      // const idTarget = +req.body.idTarget
-      // const collectionId = +req.body.collectionId
-      // const answer = await Links.changeOrder(idSource, idTarget, collectionId)
-      // res.send(answer)
-
       console.log('req.body :', req.body)
-      for (let i = 0; i < req.body.length; i++) {
-        const idSource = +req.body[i].idSource
-        const idTarget = +req.body[i].idTarget
-        const collectionId = +req.body[i].collectionId
-        await Links.changeOrder(idSource, idTarget, collectionId)
-      }
-
-      res.send()
+      const idSource = +req.body.idSource
+      const idTarget = +req.body.idTarget
+      const collectionId = +req.body.collectionId
+      const answer = await Links.changeOrder(idSource, idTarget, collectionId)
+      res.send(answer)
     } catch (error) {
       next(error)
     }

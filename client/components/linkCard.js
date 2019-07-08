@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {flow} from 'lodash'
-import {moveLinks, nullTargetId, addToQueueDb} from '../store'
+import {moveLinks, nullTargetId, sendChangesToDb} from '../store'
 // import axios from 'axios'
 
 import {DragSource, DropTarget} from 'react-dnd'
@@ -14,16 +14,18 @@ const Types = {
 const cardSource = {
   beginDrag: props => ({id: props.link.id, index: props.index}),
   endDrag(props, monitor) {
-    if (!monitor.didDrop()) {
-      return
-    }
+    console.log('monitor.didDrop() :', monitor.didDrop())
+    // if (!monitor.didDrop()) {
+    //   return
+    // }
     const idSource = monitor.getItem().id
     const idTarget = props.targetId
     const collectionId = props.collectionId
+    console.log({idSource, idTarget, collectionId})
+    props.nullTargetId()
     if (idSource !== idTarget) {
-      props.addToQueueDb({idSource, idTarget, collectionId})
-      props.nullTargetId()
-      // props.processQueue({idSource, idTarget, collectionId})
+      // props.nullTargetId()
+      props.sendChangesToDb({idSource, idTarget, collectionId})
 
       // axios
       //   .put('/api/links/reorder', {idSource, idTarget, collectionId})
@@ -112,7 +114,7 @@ const mapDispatch = dispatch => ({
   moveLinks: (sourceId, targetId, collectionId) =>
     dispatch(moveLinks(sourceId, targetId, collectionId)),
   nullTargetId: () => dispatch(nullTargetId()),
-  addToQueueDb: link => dispatch(addToQueueDb(link))
+  sendChangesToDb: link => dispatch(sendChangesToDb(link))
 })
 
 const mapState = state => ({

@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {Links} = require('../server/db/models')
+const {User, Links, Collection} = require('../server/db/models')
 
 async function seed() {
   // await db.sync()
@@ -9,14 +9,14 @@ async function seed() {
 
   const createLinks = async () => {
     try {
-      // const user = await User.create({
-      //   email: 'a@mail.ru',
-      //   password: '1',
-      //   firstName: 'Nikita',
-      //   lastName: 'Bublik'
-      // })
+      const user = await User.create({
+        email: 'a@mail.ru',
+        password: '1',
+        firstName: 'Nikita',
+        lastName: 'Bublik'
+      })
 
-      // const collection = Collection.findByPk(1)
+      const collection = Collection.findByPk(1)
 
       let newLinks = []
 
@@ -30,7 +30,7 @@ async function seed() {
         })
       }
 
-      await Links.bulkCreate(newLinks, {validate: true})
+      const links = await Links.bulkCreate(newLinks, {validate: true})
     } catch (e) {
       console.error(e)
     }
