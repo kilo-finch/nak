@@ -29,8 +29,14 @@ class AllCollections extends Component {
         ) : (
           <h3>Still Loading</h3>
         )}
-        {this.props.collections.length ? (
-          <TeamsCollection allTeamCollections={this.props.collections} />
+        {this.props.collections ? (
+          <div>
+            {this.props.collections.length > 0 ? (
+              <TeamsCollection allTeamCollections={this.props.collections} />
+            ) : (
+              <h1>No Collections Found</h1>
+            )}
+          </div>
         ) : (
           <h1>Still Loading</h1>
         )}

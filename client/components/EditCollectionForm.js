@@ -27,8 +27,7 @@ class EditCollectionForm extends Component {
     console.log(event.target.collectionName.value)
     await this.props.updateCollection(
       event.target.collectionName.value,
-      this.props.collection.id,
-      this.props.collection.teamId
+      this.props.collection.id
     )
     await this.props.resetSelectMode()
   }
@@ -77,7 +76,7 @@ class EditCollectionForm extends Component {
 const mapDispatch = dispatch => {
   return {
     updateCollection: (collectionName, collectionId, teamId) =>
-      dispatch(updateCollectionThunk(collectionName, collectionId, teamId))
+      dispatch(updateCollectionThunk(collectionName, collectionId))
   }
 }
 

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {SingleCollection, EditCollectionForm} from './index'
+import {deleteCollectionThunk} from '../store'
 
 class TeamsCollection extends Component {
   constructor() {
@@ -46,8 +47,14 @@ class TeamsCollection extends Component {
                   <button onClick={this.setSelectMode}>...</button>
                   {this.state.isInSelectMode && (
                     <div>
-                      <button onClick={this.setEditMode}>Edit Title</button>{' '}
-                      <button>Delete Collection</button>
+                      <button onClick={this.setEditMode}>Edit Title</button>
+                      <button
+                        onClick={() => {
+                          this.props.deleteCollection(collection.id)
+                        }}
+                      >
+                        Delete Collection
+                      </button>
                     </div>
                   )}
                 </div>
@@ -61,4 +68,11 @@ class TeamsCollection extends Component {
   }
 }
 
-export default TeamsCollection
+const mapDispatch = dispatch => {
+  return {
+    deleteCollection: collectionId =>
+      dispatch(deleteCollectionThunk(collectionId))
+  }
+}
+
+export default connect(null, mapDispatch)(TeamsCollection)

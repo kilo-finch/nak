@@ -2,20 +2,38 @@ const router = require('express').Router()
 const {Collection, Links, Team, User} = require('../db/models')
 module.exports = router
 
+router.delete('/:collectionId', async (req, res, next) => {
+  if (req.user) {
+    try {
+      const deletedCollection = await Collection.destroy({
+        where: {
+          id: +req.params.collectionId
+        }
+      })
+      res.sendStatus(200)
+    } catch (error) {
+      next(error)
+    }
+  } else {
+    res.sendStatus(403)
+  }
+})
+
 router.put('/:collectionId', async (req, res, next) => {
   if (req.user) {
-    console.log('req.body', req.body)
-    console.log('req.params', req.params)
-
     try {
-      const updatedCollection = await Collection.update(
+      const [
+        numberOfUpdatedCollections,
+        updatedCollection
+      ] = await Collection.update(
         {
           name: req.body.collectionName
         },
         {
           where: {
             id: +req.params.collectionId
-          }
+          },
+          returning: true
         }
       )
       res.send(updatedCollection)
