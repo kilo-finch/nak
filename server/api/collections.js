@@ -95,3 +95,18 @@ router.get('/', async (req, res, next) => {
     res.sendStatus(403)
   }
 })
+
+router.post('/:teamId', async (req, res, next) => {
+  if (req.user) {
+    try {
+      const {name} = req.body
+      const teamId = +req.params.teamId
+      const newCollection = await Collection.create({name, teamId})
+      if (newCollection) res.status(201).send(newCollection)
+    } catch (error) {
+      next(error)
+    }
+  } else {
+    res.sendStatus(403)
+  }
+})

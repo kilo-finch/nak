@@ -11,6 +11,8 @@ const initialState = {selectedCollection: []}
 const GOT_SELECTED_COLLECTION = 'GOT_SELECTED_COLLECTION'
 const UPDATE_COLLECTION = 'UPDATE_COLLECTION'
 const DELETE_COLLECTION = 'DELETE_COLLECTION'
+const CREATE_COLLECTION = 'CREATE_COLLECTION'
+
 /**
  * ACTION CREATORS
  */
@@ -27,6 +29,11 @@ const updateCollection = updatedCollection => ({
 const deleteCollection = deletedCollection => ({
   type: DELETE_COLLECTION,
   deletedCollection
+})
+
+const createdCollection = newCollection => ({
+  type: CREATE_COLLECTION,
+  newCollection
 })
 
 /**
@@ -50,6 +57,15 @@ export const updateCollectionThunk = (
       collectionName
     })
     dispatch(updateCollection(res.data[0]))
+  } catch (error) {
+    throw error
+  }
+}
+
+export const createCollection = (name, teamId) => async dispatch => {
+  try {
+    const {data} = await axios.post(`api/collections/${teamId}`, {name})
+    dispatch(createdCollection(data))
   } catch (error) {
     throw error
   }
@@ -89,6 +105,11 @@ export default function(state = initialState, action) {
         selectedCollection: state.selectedCollection.filter(collection => {
           return collection.id !== action.deletedCollection
         })
+      }
+    case CREATE_COLLECTION:
+      return {
+        ...state,
+        selectedCollection: [...state.selectedCollection, action.newCollection]
       }
     default:
       return state
