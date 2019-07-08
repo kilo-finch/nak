@@ -32,7 +32,7 @@ class TeamsCollection extends Component {
   render() {
     const {allTeamCollections} = this.props
     return (
-      <div style={{border: '2px black solid', height: '800px'}}>
+      <div style={{border: '2px black solid', height: '800px'}} className="">
         <div>
           {allTeamCollections.map(collection => (
             <div key={collection.id}>

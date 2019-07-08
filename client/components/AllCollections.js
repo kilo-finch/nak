@@ -16,9 +16,9 @@ class AllCollections extends Component {
 
   render() {
     return (
-      <div>
+      <div className="">
         {this.props.teams ? (
-          <div>
+          <div className="container">
             {this.props.teams.map(team => (
               <button
                 onClick={() => this.selectCollection(team.id)}
