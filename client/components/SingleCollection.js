@@ -12,7 +12,7 @@ const openAll = (event, links) => {
 const SingleCollection = props => {
   const {collection} = props
   return (
-    <div style={{border: '2px black solid', height: '400px'}}>
+    <div style={{border: '2px black solid', height: '400px'}} className="field">
       <div>
         <button
           type="button"

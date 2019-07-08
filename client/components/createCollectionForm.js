@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import collections, {createCollection} from '../store/collections'
 import {connect} from 'react-redux'
-
-//CREATE ADDLINKTHUNK AND CALL IT HERE
+import '../style.css'
 
 class CreateCollectionForm extends Component {
   constructor(props) {
