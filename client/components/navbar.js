@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+// import logo from '../../public/images/nak-logo-lm-02.png'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
-    <h1>nak</h1>
+    <img src="/images/nak-logo-lm-02.png" alt="nak" width="100px" />
     <nav>
       {isLoggedIn ? (
         <div>

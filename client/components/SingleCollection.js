@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+
 import {LinkCard, LinkForm} from './index'
 
 const openAll = (event, links) => {
@@ -7,6 +8,8 @@ const openAll = (event, links) => {
     window.open(link.url, '_blank')
   })
 }
+
+
 
 const SingleCollection = props => {
   const {collection} = props
@@ -30,7 +33,6 @@ const SingleCollection = props => {
           </h3>
         )}
       </div>
-      {/* <LinkForm /> */}
     </div>
   )
 }
