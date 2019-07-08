@@ -4,7 +4,7 @@ const {Fraction} = require('../../utils')
 const op = Sequelize.Op
 
 const Links = db.define('links', {
-  orderFloat: {type: Sequelize.FLOAT},
+  orderFloat: {type: Sequelize.DOUBLE},
   orderFraction: {type: Sequelize.STRING},
   description: {type: Sequelize.TEXT},
   title: {
@@ -58,13 +58,21 @@ Links.changeOrder = async (idSource, idTarget, collectionId) => {
     const source = await Links.findByPk(idSource)
     const target = await Links.findByPk(idTarget)
     let newOrder
+
+    console.log('target.orderFloat :', target.orderFloat)
+
     //if source is pre to target
     if (source.orderFloat > target.orderFloat) {
       const prev = await Links.findOne({
-        where: {orderFloat: {[op.lt]: target.orderFloat}, collectionId},
-        limit: 1,
+        where: {
+          orderFloat: {[op.lt]: target.orderFloat},
+          collectionId,
+          id: {[op.ne]: target.id}
+        },
+        // limit: 1,
         order: [['orderFloat', 'DESC']]
       })
+
       if (!prev) {
         // first = await Links.findOne({
         //   where: {collectionId},
@@ -73,22 +81,35 @@ Links.changeOrder = async (idSource, idTarget, collectionId) => {
         // })
         newOrder = new Fraction(target.orderFraction).insertLeft()
       } else {
+        // console.log('prev :', prev.id)
         // newOrder = Fraction.insertMiddleStatic(
         //   target.orderFraction,
         //   prev.orderFraction
         // )
-        newOrder = new Fraction(prev.orderFraction).insertRight()
+
+        newOrder = Fraction.insertBetween(
+          prev.orderFraction,
+          target.orderFraction
+        )
+        // newOrder = new Fraction(prev.orderFraction).insertRight()
       }
       // const orderFloat = newOrder.toFloat()
       // const orderFraction = newOrder.toString()
       // answer = await source.update({orderFloat, orderFraction})
       // if source is after target
     } else {
+      // console.log('target.orderFloat', target.orderFloat)
+      // console.log('collectionId', collectionId)
       const nextAfterTarget = await Links.findOne({
-        where: {orderFloat: {[op.gt]: target.orderFloat, collectionId}},
-        limit: 1,
+        where: {
+          orderFloat: {[op.gt]: target.orderFloat},
+          collectionId,
+          id: {[op.ne]: target.id}
+        },
+        // limit: 1,
         order: [['orderFloat', 'ASC']]
       })
+
       // let newOrder
       if (!nextAfterTarget) {
         // last = await Links.findOne({
@@ -98,11 +119,18 @@ Links.changeOrder = async (idSource, idTarget, collectionId) => {
         // })
         newOrder = new Fraction(target.orderFraction).insertRight()
       } else {
+        // console.log('nextAfterTarget', nextAfterTarget)
         // newOrder = Fraction.insertMiddleStatic(
         //   target.orderFraction,
         //   nextAfterTarget.orderFraction
         // )
-        newOrder = new Fraction(nextAfterTarget.orderFraction).insertLeft()
+
+        newOrder = Fraction.insertBetween(
+          target.orderFraction,
+          nextAfterTarget.orderFraction
+        )
+
+        // newOrder = new Fraction(nextAfterTarget.orderFraction).insertLeft()
       }
       // const orderFloat = newOrder.toFloat()
       // const orderFraction = newOrder.toString()

@@ -28,23 +28,73 @@ const Fraction = class {
     return node.add(node.right)
   }
 
+  // insertBetween(node) {
+  //   // if (this.e(node))
+  //   let smallNode = this.l(node) ? this : node
+  //   let bigNode = node.e(this) ? node : this
+  //   let left = bigNode.insertLeft()
+  //   return left.e(smallNode) ? left.add(smallNode) : smallNode
+  // }
+
+  // first input - targetId, second - nextLine(prevLine)
+  static insertBetween(input1, input2) {
+    const node1 = new Fraction(input1)
+    const node2 = new Fraction(input2)
+    const smallNode = node1.l(node2) ? node1 : node2
+    const bigNode = node1.l(node2) ? node2 : node1
+    const left = bigNode.insertLeft()
+    if (smallNode.l(left)) return left
+    const right = smallNode.insertRight()
+    if (right.l(bigNode)) return right
+    throw 'Its easier to kill yourself than make it work((('
+
+    // return left.e(smallNode) ? smallNode.add(bigNode) : left
+
+    // if (node2 > node1) {
+    //   const left = node2.insertLeft()
+    //   return left.e(node1) ? node1.add(node2) : left
+    // } else {
+    //   const right = node1.insertRight()
+    //   return right.e(node2) ? node2.add(node1) : right
+    // }
+    // const smallNode = node1.l(node2) ? node1 : node2
+    // const bigNode = node1.l(node2) ? node2 : node1
+    // console.log({smallNode, bigNode})
+    // const left = bigNode.insertLeft()
+    // console.log({left})
+    // console.log('left.e(smallNode)', left.e(smallNode))
+    // console.log('eq', left.e(smallNode) ? left.add(smallNode) : left)
+    // return left.e(smallNode) ? smallNode.add(bigNode) : left
+  }
+
   findLeftAndRight(rootNode) {
     let currNode = rootNode
-    console.log('this :', this)
-    console.log('currNode :', currNode)
-    console.log('this.e(currNode) :', this.e(currNode))
-    console.log('this.l(currNode) :', this.l(currNode))
+    // console.log('currNode :', currNode);
     while (!this.e(currNode)) {
       if (this.l(currNode)) {
-        const temp = currNode
-        currNode = currNode.add(currNode.left)
-        currNode.right = temp
-        currNode.left = temp.left
+        const newNode = currNode.add(currNode.left)
+        newNode.left = currNode.left
+        newNode.right = currNode
+        currNode = newNode
+        // console.log('newNode :', newNode.value)
+        // console.log('newNode.left :', newNode.left.value)
+        // console.log('newNode.right :', newNode.right.value)
+        // const temp = currNode
+        // currNode = currNode.add(currNode.left)
+        // currNode.right = temp
+        // currNode.left = temp.left
       } else {
-        const temp = currNode
-        currNode = currNode.add(currNode.right)
-        currNode.left = temp
-        currNode.right = temp.right
+        const newNode = currNode.add(currNode.right)
+        newNode.left = currNode
+        newNode.right = currNode.right
+        currNode = newNode
+        // console.log('newNode :', newNode.value)
+        // console.log('newNode.left :', newNode.left.value)
+        // console.log('newNode.right :', newNode.right.value)
+        // const temp = currNode
+        // currNode = currNode.add(currNode.right)
+        // currNode.left = temp
+        // currNode.right = temp.right
       }
     }
     return currNode
@@ -95,4 +145,4 @@ const Fraction = class {
 
 module.exports = {Fraction}
 
-// console.log('object', new Fraction('2/7').findLeftAndRight(new Fraction()).right)
+// console.log('object', new Fraction('10/3').findLeftAndRight(new Fraction()))
