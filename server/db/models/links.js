@@ -90,7 +90,7 @@ Links.changeOrder = async (idSource, idTarget, collectionId) => {
       })
 
       if (!nextAfterTarget) {
-        newOrder = new Fraction(target.orderFraction).getRightChild()
+        newOrder = new Fraction(target.orderFraction).insertRight()
       } else {
         newOrder = Fraction.insertBetween(
           target.orderFraction,

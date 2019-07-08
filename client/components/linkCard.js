@@ -2,10 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {flow} from 'lodash'
 import {moveLinks, nullTargetId, sendChangesToDb} from '../store'
-// import axios from 'axios'
-
 import {DragSource, DropTarget} from 'react-dnd'
-// import Axios from 'axios'
 
 const Types = {
   CARD: 'CARD'
@@ -14,26 +11,13 @@ const Types = {
 const cardSource = {
   beginDrag: props => ({id: props.link.id, index: props.index}),
   endDrag(props, monitor) {
-    console.log('monitor.didDrop() :', monitor.didDrop())
-    // if (!monitor.didDrop()) {
-    //   return
-    // }
     const idSource = monitor.getItem().id
     const idTarget = props.targetId
     const collectionId = props.collectionId
-    console.log({idSource, idTarget, collectionId})
     props.nullTargetId()
     if (idSource !== idTarget) {
-      // props.nullTargetId()
       props.sendChangesToDb({idSource, idTarget, collectionId})
-
-      // axios
-      //   .put('/api/links/reorder', {idSource, idTarget, collectionId})
-      //   .then(() => props.nullTargetId())
     }
-
-    // dropDB(dragId, hoverId)
-    // CardAction.moveCardToList(item.id, dropResult.listId)
   }
 }
 
@@ -95,19 +79,6 @@ function linkCard(props) {
       )
     )
   )
-  // (
-  //   <div>
-  //     <a target="_blank" href={`${link.url}`}>
-  //       <div>
-  //         <img src={link.favicon} alt="favicon" />
-  //         <h4 className="link-title">{link.title}</h4>
-  //         <div className="description-tag">
-  //           <p>{link.description}</p>
-  //         </div>
-  //       </div>
-  //     </a>
-  //   </div>
-  // )
 }
 
 const mapDispatch = dispatch => ({

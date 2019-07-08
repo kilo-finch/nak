@@ -6,13 +6,12 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
 
 class SingleCollection extends Component {
-  moveCard = (dragIndex, hoverIndex) => {
-    let links = [...this.state.links]
-    let temp = links[dragIndex]
-    links.splice(dragIndex, 1)
-    links.splice(hoverIndex, 0, temp)
-    // this.setState({links})
-  }
+  // moveCard = (dragIndex, hoverIndex) => {
+  //   let links = [...this.state.links]
+  //   let temp = links[dragIndex]
+  //   links.splice(dragIndex, 1)
+  //   links.splice(hoverIndex, 0, temp)
+  // }
 
   render() {
     const {collection} = this.props
@@ -25,12 +24,7 @@ class SingleCollection extends Component {
           <div className="field is-grouped is-grouped-multiline">
             {collection.links ? (
               collection.links.map((link, index) => (
-                <LinkCard
-                  link={link}
-                  index={index}
-                  key={link.id}
-                  moveCard={this.moveCard}
-                />
+                <LinkCard link={link} index={index} key={link.id} />
               ))
             ) : (
               <h3>

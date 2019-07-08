@@ -1,8 +1,5 @@
 const router = require('express').Router()
 const {Links} = require('../db/models')
-// const {Fraction} = require('../utils')
-// const Sequelize = require('sequelize')
-// const op = Sequelize.Op
 
 module.exports = router
 
@@ -79,7 +76,6 @@ router.post('/', async (req, res, next) => {
 router.put('/reorder', async function(req, res, next) {
   if (req.user) {
     try {
-      console.log('req.body :', req.body)
       const idSource = +req.body.idSource
       const idTarget = +req.body.idTarget
       const collectionId = +req.body.collectionId
