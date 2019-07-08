@@ -25,7 +25,6 @@ class CreateCollectionForm extends Component {
     // this.setState({ favicon: `${url.split('.com')[0]}.com/favicon.ico` })
     const {name} = this.state
     const id = !this.state.teamId ? this.props.teams[0].id : this.state.teamId
-    console.log('tramID', id)
     this.props.createCollection(name, id)
     this.setState({name: '', teamId: ''})
   }

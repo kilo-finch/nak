@@ -50,7 +50,7 @@ router.post('/', async (req, res, next) => {
   if (req.user) {
     try {
       let formattedLinkData = req.body.map(tab => {
-        const {description, title, url, favicon, collectionId} = tab
+        const {description = null, title, url, favicon, collectionId} = tab
         return {
           description,
           title,

@@ -9,8 +9,6 @@ const openAll = (event, links) => {
   })
 }
 
-
-
 const SingleCollection = props => {
   const {collection} = props
   return (
