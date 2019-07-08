@@ -1,45 +1,33 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {flow} from 'lodash'
-import {moveLinks, nullTargetId} from '../store'
-import axios from 'axios'
+import {moveLinks, nullTargetId, addToQueueDb} from '../store'
+// import axios from 'axios'
 
-import {
-  DragSource,
-  // useDrag,
-  DropTarget
-  // ConnectDropTarget,
-  // ConnectDragSource,
-  // DropTargetMonitor,
-  // DropTargetConnector,
-  // DragSourceConnector,
-  // DragSourceMonitor
-} from 'react-dnd'
-import Axios from 'axios'
+import {DragSource, DropTarget} from 'react-dnd'
+// import Axios from 'axios'
 
 const Types = {
   CARD: 'CARD'
 }
 
-// const dropDB = (sourceId, targetId) => {
-
-// }
-
 const cardSource = {
   beginDrag: props => ({id: props.link.id, index: props.index}),
-  endDrag(props, monitor, component) {
+  endDrag(props, monitor) {
     if (!monitor.didDrop()) {
       return
     }
     const idSource = monitor.getItem().id
-    // const idTarget = props.link.id
     const idTarget = props.targetId
     const collectionId = props.collectionId
-    console.log({idSource, idTarget})
     if (idSource !== idTarget) {
-      axios
-        .put('/api/links/reorder', {idSource, idTarget, collectionId})
-        .then(() => props.nullTargetId())
+      props.addToQueueDb({idSource, idTarget, collectionId})
+      props.nullTargetId()
+      // props.processQueue({idSource, idTarget, collectionId})
+
+      // axios
+      //   .put('/api/links/reorder', {idSource, idTarget, collectionId})
+      //   .then(() => props.nullTargetId())
     }
 
     // dropDB(dragId, hoverId)
@@ -47,56 +35,27 @@ const cardSource = {
   }
 }
 
-function collect(connect, monitor) {
+function collect(conn, monitor) {
   return {
-    connectDragSource: connect.dragSource(),
+    connectDragSource: conn.dragSource(),
     isDragging: monitor.isDragging()
   }
 }
 
 const cardTarget = {
-  hover(props, monitor, component) {
-    console.log({props, monitor, component})
+  hover(props, monitor) {
     const dragIndex = monitor.getItem().index
     const hoverIndex = props.index
 
     const dragId = monitor.getItem().id
     const hoverId = props.link.id
 
-    // console.log({dragId, hoverId})
-
-    // console.log({dragIndex, hoverIndex})
     // Don't replace items with themselves
     if (dragIndex === hoverIndex || dragId === hoverId) {
       return
     }
-    // Determine rectangle on screen
-    // const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
-
-    // // Get vertical middle
-    // const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-
-    // // Determine mouse position
-    // const clientOffset = monitor.getClientOffset()
-
-    // // Get pixels to the top
-    // const hoverClientY = clientOffset.y - hoverBoundingRect.top
-
-    // // Only perform the move when the mouse has crossed half of the items height
-    // // When dragging downwards, only move when the cursor is below 50%
-    // // When dragging upwards, only move when the cursor is above 50%
-    // // Dragging downwards
-    // if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-    //   return
-    // }
-
-    // // Dragging upwards
-    // if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-    //   return
-    // }
 
     // Time to actually perform the action
-    // props.moveCard(dragIndex, hoverIndex)
     props.moveLinks(dragIndex, hoverIndex, props.link.collectionId)
 
     // Note: we're mutating the monitor item here!
@@ -107,8 +66,8 @@ const cardTarget = {
   }
 }
 
-const connectTarget = connect => ({
-  connectDropTarget: connect.dropTarget()
+const connectTarget = conn => ({
+  connectDropTarget: conn.dropTarget()
 })
 
 // need to pass props to cmpnt
@@ -152,7 +111,8 @@ function linkCard(props) {
 const mapDispatch = dispatch => ({
   moveLinks: (sourceId, targetId, collectionId) =>
     dispatch(moveLinks(sourceId, targetId, collectionId)),
-  nullTargetId: () => dispatch(nullTargetId())
+  nullTargetId: () => dispatch(nullTargetId()),
+  addToQueueDb: link => dispatch(addToQueueDb(link))
 })
 
 const mapState = state => ({
@@ -165,8 +125,3 @@ export default flow(
   DropTarget(Types.CARD, cardTarget, connectTarget),
   connect(mapState, mapDispatch)
 )(linkCard)
-
-//   const drag1 = DragSource(Types.CARD, cardSource, collect)(linkCard)
-//   const drag2 = DropTarget(Types.CARD, cardTarget, connectTarget)(drag)
-
-// export default connect()(drag2)
