@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {LinkCard, LinkForm} from './index'
+import {LinkCard} from './index'
 import {connect} from 'react-redux'
 
 const SingleCollection = props => {
@@ -16,7 +16,6 @@ const SingleCollection = props => {
           </h3>
         )}
       </div>
-      {/* <LinkForm /> */}
     </div>
   )
 }
