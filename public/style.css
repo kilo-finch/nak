@@ -28,20 +28,20 @@ form div {
   border: none;
   cursor: pointer;
   opacity: 0.8;
-  /* position: fixed;
+  position: fixed;
   bottom: 23px;
   right: 28px;
-  width: 50px; */
+  width: 50px;
 }
 
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
-  /* position: fixed;
+  position: fixed;
   bottom: 0;
   right: 15px;
-  border: 3px solid #f1f1f1; */
-  /* z-index: 9; */
+  border: 3px solid #f1f1f1;
+  z-index: 9;
 }
 
 /* Add styles to the form container */

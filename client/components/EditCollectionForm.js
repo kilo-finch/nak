@@ -24,7 +24,6 @@ class EditCollectionForm extends Component {
 
   handleSubmit = async event => {
     event.preventDefault()
-    console.log(event.target.collectionName.value)
     await this.props.updateCollection(
       event.target.collectionName.value,
       this.props.collection.id
