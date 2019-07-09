@@ -16,12 +16,9 @@ router.post('/:teamId', async (req, res, next) => {
       const {name} = req.body
       const teamId = +req.params.teamId
       const newCollection = await Collection.create({name, teamId})
-      if (newCollection) {
-        //added socket here
-
-        socket.to(teamId).emit('team_collection_adjusted')
-        res.status(201).send(newCollection)
-      }
+      //added socket here
+      io.to(teamId).emit('team_collection_adjusted', teamId)
+      res.status(201).send(newCollection)
     } catch (error) {
       next(error)
     }
@@ -72,8 +69,6 @@ router.get('/:teamId', async (req, res, next) => {
           teamId: req.params.teamId
         }
       })
-
-      console.log(io.sockets.adapter.rooms)
       res.send(selectedCollection)
     } catch (error) {
       next(error)
@@ -104,7 +99,7 @@ router.put('/:collectionId', async (req, res, next) => {
       //socket here
       const teamId = updatedCollection.teamId
 
-      socket.to(teamId).emit('team_collection_added')
+      io.to(teamId).emit('team_collection_added')
 
       res.send(updatedCollection)
     } catch (error) {

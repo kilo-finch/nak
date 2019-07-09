@@ -22,11 +22,10 @@ router.get('/', async (req, res, next) => {
         }
       })
       //connecting the user to each team room
-      console.log('JOINING ALL THE TEAMS FOR', socket.id)
       allUserTeams.forEach(team => {
         socket.join(team.id)
-        socket.to(team.id).emit('msg', 'hi')
       })
+      // console.log(io.sockets.adapter.rooms)
       res.send(allUserTeams)
     } catch (error) {
       next(error)
