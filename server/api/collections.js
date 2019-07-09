@@ -67,7 +67,8 @@ router.get('/:teamId', async (req, res, next) => {
         },
         where: {
           teamId: req.params.teamId
-        }
+        },
+        order: [[{model: Links}, 'orderFloat', 'ASC']]
       })
       res.send(selectedCollection)
     } catch (error) {
