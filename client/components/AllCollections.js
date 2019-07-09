@@ -1,23 +1,17 @@
 import React, {Component} from 'react'
-import {LinkCard, LinkForm, TeamsCollection} from './index'
+import {LinkCard, TeamsCollection, CreateCollectionForm} from './index'
 import {connect} from 'react-redux'
 import {selectedCollectionThunk, allTeamsThunk} from '../store'
 import {Link, Route} from 'react-router-dom'
 
 class AllCollections extends Component {
-  constructor() {
-    super()
-    this.state = {selectedCollection: 0}
-    this.selectCollection = this.selectCollection.bind(this)
-  }
-
-  componentDidMount() {
-    this.props.getAllTeams()
+  async componentDidMount() {
+    await this.props.getAllTeams()
+    await this.props.getSelectedCollection(this.props.teams[0].id)
   }
 
   selectCollection(selection) {
     this.props.getSelectedCollection(selection)
-    this.setState({selectedCollection: selection})
   }
 
   render() {
@@ -29,17 +23,27 @@ class AllCollections extends Component {
               <button
                 onClick={() => this.selectCollection(team.id)}
                 key={team.id}
-              >{`${team.name}`}</button>
+                type="button"
+              >
+                {`${team.name}`}
+              </button>
             ))}
           </div>
         ) : (
           <h3>Still Loading</h3>
         )}
         {this.props.collections ? (
-          <TeamsCollection allTeamCollections={this.props.collections} />
+          <div>
+            {this.props.collections.length > 0 ? (
+              <TeamsCollection allTeamCollections={this.props.collections} />
+            ) : (
+              <h1>No Collections Found</h1>
+            )}
+          </div>
         ) : (
           <h1>Still Loading</h1>
         )}
+        <CreateCollectionForm teams={this.props.teams} />
       </div>
     )
   }

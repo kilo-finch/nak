@@ -16,6 +16,10 @@ const GOT_SELECTED_COLLECTION = 'GOT_SELECTED_COLLECTION'
 const MOVE_LINKS = 'MOVE_LINKS'
 const NULL_TARGETID = 'NULL_TARGETID'
 
+const UPDATE_COLLECTION = 'UPDATE_COLLECTION'
+const DELETE_COLLECTION = 'DELETE_COLLECTION'
+const CREATE_COLLECTION = 'CREATE_COLLECTION'
+
 /**
  * ACTION CREATORS
  */
@@ -33,6 +37,21 @@ export const moveLinks = (sourceId, targetId, collectionId) => ({
 
 export const nullTargetId = () => ({type: NULL_TARGETID})
 
+const updateCollection = updatedCollection => ({
+  type: UPDATE_COLLECTION,
+  updatedCollection
+})
+
+const deleteCollection = deletedCollection => ({
+  type: DELETE_COLLECTION,
+  deletedCollection
+})
+
+const createdCollection = newCollection => ({
+  type: CREATE_COLLECTION,
+  newCollection
+})
+
 /**
  * THUNK CREATORS
  */
@@ -49,6 +68,38 @@ export const sendChangesToDb = link => dispatch => {
   const {idSource, idTarget, collectionId} = link
   if (idSource && idTarget && collectionId) {
     axios.put('/api/links/reorder', link)
+  }
+}
+
+export const updateCollectionThunk = (
+  collectionName,
+  collectionId
+) => async dispatch => {
+  try {
+    const res = await axios.put(`api/collections/${collectionId}`, {
+      collectionName
+    })
+    dispatch(updateCollection(res.data[0]))
+  } catch (error) {
+    throw error
+  }
+}
+
+export const createCollection = (name, teamId) => async dispatch => {
+  try {
+    const {data} = await axios.post(`api/collections/${teamId}`, {name})
+    dispatch(createdCollection(data))
+  } catch (error) {
+    throw error
+  }
+}
+
+export const deleteCollectionThunk = collectionId => async dispatch => {
+  try {
+    const res = await axios.delete(`api/collections/${collectionId}`)
+    dispatch(deleteCollection(collectionId))
+  } catch (error) {
+    throw error
   }
 }
 
@@ -82,6 +133,30 @@ export default function(state = initialState, action) {
       }
     case NULL_TARGETID:
       return {...state, dnd: {...state.dnd, targetId: null, collectionId: null}}
+    case UPDATE_COLLECTION:
+      return {
+        ...state,
+        selectedCollection: state.selectedCollection.map(collection => {
+          if (collection.id === action.updatedCollection.id) {
+            action.updatedCollection.links = collection.links
+            return action.updatedCollection
+          } else {
+            return collection
+          }
+        })
+      }
+    case DELETE_COLLECTION:
+      return {
+        ...state,
+        selectedCollection: state.selectedCollection.filter(collection => {
+          return collection.id !== action.deletedCollection
+        })
+      }
+    case CREATE_COLLECTION:
+      return {
+        ...state,
+        selectedCollection: [...state.selectedCollection, action.newCollection]
+      }
     default:
       return state
   }

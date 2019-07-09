@@ -1,9 +1,15 @@
 import React, {Component} from 'react'
 import {LinkCard, LinkForm} from './index'
-import {connect} from 'react-redux'
 
 import HTML5Backend from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
+
+const openAll = (event, links) => {
+  links.forEach(link => {
+    event.preventDefault()
+    window.open(link.url, '_blank')
+  })
+}
 
 const SingleCollection = props => {
   const {collection} = props
