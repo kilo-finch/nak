@@ -45,7 +45,7 @@ class CreateCollectionForm extends Component {
         </button>
         <div className="form-popup" id="myForm">
           <form className="form-container" onSubmit={this.handleSubmit}>
-            <label htmlFor="name">
+            <label htmlFor="name" className="label">
               <b>Select Team:</b>
             </label>
             <select
@@ -61,7 +61,7 @@ class CreateCollectionForm extends Component {
                   ))
                 : null}
             </select>
-            <label htmlFor="name">
+            <label htmlFor="name" className="label">
               <b>Collection Name:</b>
             </label>
             <input

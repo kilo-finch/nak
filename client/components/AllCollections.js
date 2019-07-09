@@ -18,12 +18,13 @@ class AllCollections extends Component {
     return (
       <div className="">
         {this.props.teams ? (
-          <div className="container">
+          <div className="">
             {this.props.teams.map(team => (
               <button
                 onClick={() => this.selectCollection(team.id)}
                 key={team.id}
                 type="button"
+                className="button is-primary is-size-6 has-text-weight-bold"
               >
                 {`${team.name}`}
               </button>

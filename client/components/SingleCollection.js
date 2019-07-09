@@ -7,17 +7,18 @@ const openAll = (event, links) => {
     event.preventDefault()
     window.open(link.url, '_blank')
   })
+  window.focus()
 }
 
 const SingleCollection = props => {
   const {collection} = props
   return (
-    <div style={{border: '2px black solid', height: '400px'}} className="">
+    <div style={{border: '2px black solid', height: '400px'}}>
       <div>
         <button
           type="button"
           onClick={event => openAll(event, collection.links)}
-          className="button"
+          className="button is-primary is-size-6 has-text-weight-bold"
         >
           Open All
         </button>

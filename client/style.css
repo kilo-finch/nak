@@ -16,15 +16,15 @@ nav a {
 }
 
 form div {
-  margin: 1em;
+  /* margin: 1em; */
   display: inline-block;
 }
 
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
-  background-color: #555;
+  background-color: #44fbaa;
   color: white;
-  padding: 16px 20px;
+  padding: 0;
   border: none;
   cursor: pointer;
   opacity: 0.8;
@@ -32,6 +32,12 @@ form div {
   bottom: 23px;
   right: 28px;
   width: 50px;
+  font-weight: 900;
+  font-size: 2.5rem;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 15%;
 }
 
 /* The popup form - hidden by default */
@@ -70,7 +76,7 @@ form div {
 
 /* Set a style for the submit/login button */
 .form-container .btn {
-  background-color: #4caf50;
+  background-color: #44fbaa;
   color: white;
   padding: 16px 20px;
   border: none;
@@ -78,6 +84,7 @@ form div {
   width: 100%;
   margin-bottom: 10px;
   opacity: 0.8;
+  font-weight: 900;
 }
 
 /* Add a red background color to the cancel button */
