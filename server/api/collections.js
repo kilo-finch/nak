@@ -1,6 +1,14 @@
 const router = require('express').Router()
 const {Collection, Links, Team, User} = require('../db/models')
-module.exports = router
+
+let io
+let socket
+const setIO = (IO, SOCKET) => {
+  io = IO
+  socket = SOCKET
+}
+
+module.exports = {router, setIO}
 
 router.post('/:teamId', async (req, res, next) => {
   if (req.user) {
@@ -8,7 +16,9 @@ router.post('/:teamId', async (req, res, next) => {
       const {name} = req.body
       const teamId = +req.params.teamId
       const newCollection = await Collection.create({name, teamId})
-      if (newCollection) res.status(201).send(newCollection)
+      //added socket here
+      io.to(teamId).emit('get_team', teamId)
+      res.status(201).send(newCollection)
     } catch (error) {
       next(error)
     }
@@ -86,6 +96,10 @@ router.put('/:collectionId', async (req, res, next) => {
           returning: true
         }
       )
+
+      //socket here
+      const teamId = updatedCollection.teamId
+      io.to(teamId).emit('get_team', teamId)
       res.send(updatedCollection)
     } catch (error) {
       next(error)
@@ -98,11 +112,15 @@ router.put('/:collectionId', async (req, res, next) => {
 router.delete('/:collectionId', async (req, res, next) => {
   if (req.user) {
     try {
+      const teamId = await Collection.findByPk(+req.params.collectionId)
       const deletedCollection = await Collection.destroy({
         where: {
           id: +req.params.collectionId
         }
       })
+
+      //socket here
+      io.to(teamId).emit('get_team', teamId)
       res.sendStatus(200)
     } catch (error) {
       next(error)
