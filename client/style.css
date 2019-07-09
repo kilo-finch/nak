@@ -1,6 +1,6 @@
-body {
+/* body {
   font-family: sans-serif;
-}
+} */
 
 a {
   text-decoration: none;
@@ -11,12 +11,12 @@ label {
 }
 
 nav a {
-  /* display: inline-block; */
+  display: inline-block;
   margin: 1em;
 }
 
 form div {
-  /* margin: 1em; */
+  margin: 1em;
   display: inline-block;
 }
 
@@ -24,16 +24,16 @@ form div {
 .open-button {
   background-color: #44fbaa;
   color: white;
-  padding: 0;
+  padding-bottom: 0px;
   border: none;
   cursor: pointer;
   opacity: 0.8;
   position: fixed;
   bottom: 23px;
-  right: 28px;
+  right: 10px;
   width: 50px;
   font-weight: 900;
-  font-size: 2.5rem;
+  font-size: 2rem;
   width: 50px;
   height: 50px;
   text-align: center;
@@ -60,7 +60,7 @@ form div {
 /* Full-width input fields */
 .form-container input[type='text'],
 .form-container input[type='password'] {
-  width: 90%;
+  width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
   border: none;

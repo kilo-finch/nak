@@ -21,13 +21,12 @@ class CreateCollectionForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault()
-    // this.setState({ favicon: `${url.split('.com')[0]}.com/favicon.ico` })
     const {name} = this.state
     const id = !this.state.teamId ? this.props.teams[0].id : this.state.teamId
     this.props.createCollection(name, id)
     this.setState({name: '', teamId: ''})
   }
-  ////////////////////////////////
+
   openForm = () => {
     document.getElementById('myForm').style.display = 'block'
   }
@@ -35,7 +34,7 @@ class CreateCollectionForm extends Component {
   closeForm = () => {
     document.getElementById('myForm').style.display = 'none'
   }
-  ///////////////////////////////
+
   render() {
     const {teams} = this.props
     return (
@@ -48,19 +47,22 @@ class CreateCollectionForm extends Component {
             <label htmlFor="name" className="label">
               <b>Select Team:</b>
             </label>
-            <select
-              value={this.state.teamId}
-              name="teamId"
-              onChange={this.handleChange}
-            >
-              {teams
-                ? teams.map(team => (
-                    <option key={team.id} value={team.id}>
-                      {team.name}
-                    </option>
-                  ))
-                : null}
-            </select>
+            <div className="select is-primary">
+              <select
+                value={this.state.teamId}
+                name="teamId"
+                onChange={this.handleChange}
+              >
+                {teams
+                  ? teams.map(team => (
+                      <option key={team.id} value={team.id}>
+                        {team.name}
+                      </option>
+                    ))
+                  : null}
+              </select>
+            </div>
+
             <label htmlFor="name" className="label">
               <b>Collection Name:</b>
             </label>
@@ -71,6 +73,7 @@ class CreateCollectionForm extends Component {
               placeholder="Enter name of new collection..."
               value={this.state.name}
               onChange={event => this.handleChange(event)}
+              className="input"
             />
             <button type="submit" className="btn">
               Submit

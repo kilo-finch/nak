@@ -5,14 +5,17 @@ import {deleteCollectionThunk} from '../store'
 
 const collectionContainer = {
   border: '2px #34c992 solid',
-  height: '400px',
   color: '#black',
   borderRadius: '15px',
-  marginBottom: '25px'
+  marginBottom: '25px',
+  // backgroundColor: "#064372",
+  height: '250px',
+  maxHeight: '600px'
 }
 
 const collectionHeader = {
-  backgroundColor: '#34c992',
+  background: 'linear-gradient(135deg, #34c992 0%,#44fbaa 99%)',
+  // backgroundColor: "#34c992",
   padding: '15px',
   borderTopLeftRadius: '12px',
   borderTopRightRadius: '12px'
@@ -30,17 +33,17 @@ class TeamsCollection extends Component {
 
   setSelectMode = () => {
     if (!this.state.isInSelectMode) {
-      this.setState({...this.state, isInSelectMode: true})
+      this.setState({isInSelectMode: true})
     } else {
-      this.setState({...this.state, isInSelectMode: false, isInEditMode: false})
+      this.setState({isInSelectMode: false, isInEditMode: false})
     }
   }
 
   setEditMode = () => {
     if (!this.state.isInEditMode) {
-      this.setState({...this.state, isInEditMode: true})
+      this.setState({isInEditMode: true})
     } else {
-      this.setState({...this.state, isInEditMode: false})
+      this.setState({isInEditMode: false})
     }
   }
 
@@ -64,27 +67,29 @@ class TeamsCollection extends Component {
                     </h3>
                   </div>
                   <div className="level-right">
-                    <button onClick={this.setSelectMode} className="level-item">
+                    <button
+                      onClick={this.setSelectMode}
+                      className="level-item button is-small"
+                    >
                       ...
                     </button>
-                    {this.state.isInSelectMode && (
-                      <div className="level-item">
-                        <button
-                          onClick={this.setEditMode}
-                          className="level-item"
-                        >
-                          Edit Title
-                        </button>
-                        <button
-                          onClick={() => {
-                            this.props.deleteCollection(collection.id)
-                          }}
-                          className="level-item"
-                        >
-                          Delete Collection
-                        </button>
-                      </div>
-                    )}
+                    <div>
+                      {this.state.isInSelectMode && (
+                        <div>
+                          <button onClick={this.setEditMode} className="">
+                            Edit Title
+                          </button>
+                          <button
+                            onClick={() => {
+                              this.props.deleteCollection(collection.id)
+                            }}
+                            className=""
+                          >
+                            Delete Collection
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
