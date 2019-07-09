@@ -1,9 +1,9 @@
 @charset "utf-8";
 
 // Import a Google Font
-// @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
 // @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+// @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 // Set your brand colors
 $mint: #44fbaa;
@@ -14,17 +14,17 @@ $blue-dark: #022743;
 $blue-light: #064372;
 
 // Update Bulma's global variables
-$family-sans-serif: 'Roboto', sans-serif;
+$family-sans-serif: 'Nunito', sans-serif;
 $grey-dark: $white;
 $grey-light: $blue-light;
 $primary: $mint;
 $secondary: $mint-dark;
-$link: $white;
+$link: $mint-dark;
 $widescreen-enabled: false;
 $fullhd-enabled: false;
 
 // Update some of Bulma's component variables
-$body-background-color: $blue-light;
+$body-background-color: $blue-dark;
 $control-border-width: 2px;
 $input-border-color: transparent;
 $input-shadow: none;

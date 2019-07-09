@@ -21,13 +21,13 @@ class AllCollections extends Component {
           <div className="tabs is-boxed is-toggled">
             <ul>
               {this.props.teams.map(team => (
-                <li className="" style={{marginRight: '5px'}}>
+                <li className="tab" style={{marginRight: '5px'}}>
                   <a
                     onClick={() => this.selectCollection(team.id)}
                     key={team.id}
                     type="button"
                     className="has-text-weight-bold"
-                    style={{color: '#fff', backgroundColor: '#44fbaa'}}
+                    style={{color: '#fff', backgroundColor: '#34c992'}}
                   >
                     {`${team.name}`}
                   </a>

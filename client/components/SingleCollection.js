@@ -17,11 +17,9 @@ const SingleCollection = props => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        style={{border: '2px black solid', height: '400px', color: '#black'}}
+      // style={{ border: '2px black solid', height: '400px', color: '#black' }}
       >
-        <div
-        // className="field is-grouped is-grouped-multiline"
-        >
+        <div className="field is-grouped is-grouped-multiline">
           {collection.links ? (
             collection.links.map((link, index) => (
               <LinkCard link={link} index={index} key={link.id} />

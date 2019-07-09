@@ -68,20 +68,20 @@ function linkCard(props) {
     connectDropTarget &&
     connectDragSource(
       connectDropTarget(
-        // <div className="control" style={{opacity}}>
-        //   <div className="tags has-addons">
-        //     <a className="tag is-link" href={link.url}>
-        //       {link.title}
-        //     </a>
-        //     <a className="tag is-delete" />
-        //   </div>
-        // </div>
-        <div style={{opacity}}>
-          <div>
-            <a href={link.url}>{link.title}</a>
-            <a />
+        <div className="control" style={{opacity}}>
+          <div className="tags has-addons">
+            <a className="tag is-link" href={link.url}>
+              {link.title}
+            </a>
+            <a className="tag is-delete" />
           </div>
         </div>
+        // <div style={{opacity}}>
+        //   <div>
+        //     <a href={link.url}>{link.title}</a>
+        //     <a />
+        //   </div>
+        // </div>
       )
     )
   )

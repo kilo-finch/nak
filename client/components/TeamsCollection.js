@@ -3,6 +3,21 @@ import {connect} from 'react-redux'
 import {SingleCollection, EditCollectionForm} from './index'
 import {deleteCollectionThunk} from '../store'
 
+const collectionContainer = {
+  border: '2px #34c992 solid',
+  height: '400px',
+  color: '#black',
+  borderRadius: '15px',
+  marginBottom: '25px'
+}
+
+const collectionHeader = {
+  backgroundColor: '#34c992',
+  padding: '15px',
+  borderTopLeftRadius: '12px',
+  borderTopRightRadius: '12px'
+}
+
 class TeamsCollection extends Component {
   constructor() {
     super()
@@ -33,30 +48,44 @@ class TeamsCollection extends Component {
     const {allTeamCollections} = this.props
     return (
       <div>
-        <div>
+        <div className="">
           {allTeamCollections.map(collection => (
-            <div key={collection.id}>
+            <div key={collection.id} style={collectionContainer}>
               {this.state.isInEditMode ? (
                 <EditCollectionForm
                   resetSelectMode={this.setSelectMode}
                   collection={collection}
                 />
               ) : (
-                <div>
-                  <h3>{collection.name}</h3>
-                  <button onClick={this.setSelectMode}>...</button>
-                  {this.state.isInSelectMode && (
-                    <div>
-                      <button onClick={this.setEditMode}>Edit Title</button>
-                      <button
-                        onClick={() => {
-                          this.props.deleteCollection(collection.id)
-                        }}
-                      >
-                        Delete Collection
-                      </button>
-                    </div>
-                  )}
+                <div className="level" style={collectionHeader}>
+                  <div className="level-left">
+                    <h3 className="level-item is-size-4 has-text-weight-bold">
+                      {collection.name}
+                    </h3>
+                  </div>
+                  <div className="level-right">
+                    <button onClick={this.setSelectMode} className="level-item">
+                      ...
+                    </button>
+                    {this.state.isInSelectMode && (
+                      <div className="level-item">
+                        <button
+                          onClick={this.setEditMode}
+                          className="level-item"
+                        >
+                          Edit Title
+                        </button>
+                        <button
+                          onClick={() => {
+                            this.props.deleteCollection(collection.id)
+                          }}
+                          className="level-item"
+                        >
+                          Delete Collection
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
               <SingleCollection collection={collection} />
