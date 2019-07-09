@@ -16,10 +16,11 @@ const SingleCollection = props => {
   const {collection} = props
   return (
     <DndProvider backend={HTML5Backend}>
-      <div
-      // style={{ border: '2px black solid', height: '400px', color: '#black' }}
-      >
-        <div className="field is-grouped is-grouped-multiline">
+      <div>
+        <div
+          className="field is-grouped is-grouped-multiline"
+          style={{overflowY: 'auto', maxHeight: '600px', padding: '5px'}}
+        >
           {collection.links ? (
             collection.links.map((link, index) => (
               <LinkCard link={link} index={index} key={link.id} />
@@ -31,7 +32,6 @@ const SingleCollection = props => {
             </h3>
           )}
         </div>
-        {/* <LinkForm /> */}
       </div>
     </DndProvider>
   )
