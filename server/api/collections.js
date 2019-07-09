@@ -17,7 +17,7 @@ router.post('/:teamId', async (req, res, next) => {
       const teamId = +req.params.teamId
       const newCollection = await Collection.create({name, teamId})
       //added socket here
-      io.to(teamId).emit('team_collection_adjusted', teamId)
+      io.to(teamId).emit('get_team', teamId)
       res.status(201).send(newCollection)
     } catch (error) {
       next(error)
@@ -98,9 +98,7 @@ router.put('/:collectionId', async (req, res, next) => {
 
       //socket here
       const teamId = updatedCollection.teamId
-
-      io.to(teamId).emit('team_collection_added')
-
+      io.to(teamId).emit('get_team', teamId)
       res.send(updatedCollection)
     } catch (error) {
       next(error)
@@ -121,8 +119,7 @@ router.delete('/:collectionId', async (req, res, next) => {
       })
 
       //socket here
-      socket.to(teamId).emit('team_collection_removed')
-
+      io.to(teamId).emit('get_team', teamId)
       res.sendStatus(200)
     } catch (error) {
       next(error)
