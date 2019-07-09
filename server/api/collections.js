@@ -104,7 +104,7 @@ router.put('/:collectionId', async (req, res, next) => {
       //socket here
       const teamId = updatedCollection.teamId
 
-      socket.to(teamId).emit('team_collection_adjusted')
+      socket.to(teamId).emit('team_collection_added')
 
       res.send(updatedCollection)
     } catch (error) {
@@ -126,7 +126,7 @@ router.delete('/:collectionId', async (req, res, next) => {
       })
 
       //socket here
-      socket.to(teamId).emit('team_collection_adjusted')
+      socket.to(teamId).emit('team_collection_removed')
 
       res.sendStatus(200)
     } catch (error) {
