@@ -25,13 +25,24 @@ router.get('/', async (req, res, next) => {
       allUserTeams.forEach(team => {
         socket.join(team.id)
       })
-      console.log(io.sockets.adapter.rooms)
+      // console.log(io.sockets.adapter.rooms)
       res.send(allUserTeams)
     } catch (error) {
       next(error)
     }
   } else {
     res.sendStatus(403)
+  }
+})
+
+router.get('/:teamId', async (req, res, next) => {
+  if (req.user) {
+    try {
+      const singleTeam = await Team.findByPk(+req.user.params.teamId)
+      res.send(singleTeam)
+    } catch (error) {
+      next(error)
+    }
   }
 })
 

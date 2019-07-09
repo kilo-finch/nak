@@ -1,6 +1,5 @@
 import io from 'socket.io-client'
-import store from './store'
-import {selectedCollectionThunk, updateCollectionThunk} from './store/'
+import store, {selectedCollectionThunk, moveLinks} from './store'
 
 const socket = io(window.location.origin)
 
@@ -8,11 +7,12 @@ socket.on('connect', () => {
   console.log('Connected!')
 })
 
-socket.on('get_team', teamId => {
-  store.dispatch(selectedCollectionThunk(teamId))
+socket.on('get_team', async teamId => {
+  await store.dispatch(selectedCollectionThunk(teamId))
 })
-export default socket
 
-socket.on('get_collection', collectionId => {
-  store.dispatch(updateCollectionThunk(collectionId))
+socket.on('move_links', ({sourceId, targetId, collectionId} = updateOrder) => {
+  store.dispatch(moveLinks(sourceId, targetId, collectionId))
 })
+
+export default socket

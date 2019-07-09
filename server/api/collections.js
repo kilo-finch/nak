@@ -82,6 +82,7 @@ router.get('/:teamId', async (req, res, next) => {
 router.put('/:collectionId', async (req, res, next) => {
   if (req.user) {
     try {
+      const collection = await Collection.findByPk(+req.params.collectionId)
       const [
         numberOfUpdatedCollections,
         updatedCollection
@@ -98,8 +99,7 @@ router.put('/:collectionId', async (req, res, next) => {
       )
 
       //socket here
-      const teamId = updatedCollection.teamId
-      io.to(teamId).emit('get_team', teamId)
+      io.to(collection.teamId).emit('get_team', collection.teamId)
       res.send(updatedCollection)
     } catch (error) {
       next(error)
@@ -112,7 +112,7 @@ router.put('/:collectionId', async (req, res, next) => {
 router.delete('/:collectionId', async (req, res, next) => {
   if (req.user) {
     try {
-      const teamId = await Collection.findByPk(+req.params.collectionId)
+      const collection = await Collection.findByPk(+req.params.collectionId)
       const deletedCollection = await Collection.destroy({
         where: {
           id: +req.params.collectionId
@@ -120,7 +120,7 @@ router.delete('/:collectionId', async (req, res, next) => {
       })
 
       //socket here
-      io.to(teamId).emit('get_team', teamId)
+      io.to(collection.teamId).emit('get_team', collection.teamId)
       res.sendStatus(200)
     } catch (error) {
       next(error)
