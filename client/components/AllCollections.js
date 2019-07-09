@@ -18,17 +18,22 @@ class AllCollections extends Component {
     return (
       <div className="">
         {this.props.teams ? (
-          <div className="">
-            {this.props.teams.map(team => (
-              <button
-                onClick={() => this.selectCollection(team.id)}
-                key={team.id}
-                type="button"
-                className="button is-primary is-size-6 has-text-weight-bold"
-              >
-                {`${team.name}`}
-              </button>
-            ))}
+          <div className="tabs is-boxed is-toggled">
+            <ul>
+              {this.props.teams.map(team => (
+                <li className="" style={{marginRight: '5px'}}>
+                  <a
+                    onClick={() => this.selectCollection(team.id)}
+                    key={team.id}
+                    type="button"
+                    className="has-text-weight-bold"
+                    style={{color: '#fff', backgroundColor: '#44fbaa'}}
+                  >
+                    {`${team.name}`}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         ) : (
           <h3>Still Loading</h3>

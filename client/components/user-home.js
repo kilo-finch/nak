@@ -10,7 +10,7 @@ export const UserHome = props => {
   const {email, firstName} = props.user
 
   return (
-    <div>
+    <div style={{width: '90vw', margin: '0 auto'}}>
       <h3>Welcome, {`${firstName}`}</h3>
       <AllCollections />
     </div>
