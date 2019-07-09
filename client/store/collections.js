@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import axios from 'axios'
 // import history from '../history'
 import store from '.'
@@ -15,7 +16,6 @@ const initialState = {
 const GOT_SELECTED_COLLECTION = 'GOT_SELECTED_COLLECTION'
 const MOVE_LINKS = 'MOVE_LINKS'
 const NULL_TARGETID = 'NULL_TARGETID'
-
 const UPDATE_COLLECTION = 'UPDATE_COLLECTION'
 const DELETE_COLLECTION = 'DELETE_COLLECTION'
 const CREATE_COLLECTION = 'CREATE_COLLECTION'
@@ -23,7 +23,7 @@ const CREATE_COLLECTION = 'CREATE_COLLECTION'
 /**
  * ACTION CREATORS
  */
-const gotSelectedCollection = selectedCollection => ({
+export const gotSelectedCollection = selectedCollection => ({
   type: GOT_SELECTED_COLLECTION,
   selectedCollection
 })
@@ -37,17 +37,17 @@ export const moveLinks = (sourceId, targetId, collectionId) => ({
 
 export const nullTargetId = () => ({type: NULL_TARGETID})
 
-const updateCollection = updatedCollection => ({
+export const updateCollection = updatedCollection => ({
   type: UPDATE_COLLECTION,
   updatedCollection
 })
 
-const deleteCollection = deletedCollection => ({
+export const deleteCollection = deletedCollection => ({
   type: DELETE_COLLECTION,
   deletedCollection
 })
 
-const createdCollection = newCollection => ({
+export const createdCollection = newCollection => ({
   type: CREATE_COLLECTION,
   newCollection
 })
@@ -111,6 +111,7 @@ export default function(state = initialState, action) {
     case GOT_SELECTED_COLLECTION:
       return {...state, selectedCollection: [...action.selectedCollection]}
     case MOVE_LINKS:
+      console.log(action)
       let targetId
       const collectionId = action.collectionId
       const selectedCollection = [...state.selectedCollection]
@@ -118,8 +119,8 @@ export default function(state = initialState, action) {
         if (el.id === collectionId) {
           let newCollection = {...el, links: el.links}
           let links = newCollection.links
-          targetId = links[action.targetId].id
-          let temp = links[action.sourceId]
+          targetId = links[action.targetId].id //hover action.targetId
+          let temp = links[action.sourceId] //drag and target
           links.splice(action.sourceId, 1)
           links.splice(action.targetId, 0, temp)
           return newCollection
