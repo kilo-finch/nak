@@ -1,5 +1,10 @@
 import React, {Component} from 'react'
-import {LinkCard, TeamsCollection, CreateCollectionForm} from './index'
+import {
+  LinkCard,
+  TeamsCollection,
+  CreateCollectionForm,
+  AddTeamForm
+} from './index'
 import {connect} from 'react-redux'
 import {selectedCollectionThunk, allTeamsThunk} from '../store'
 import {Link, Route} from 'react-router-dom'
@@ -24,14 +29,17 @@ class AllCollections extends Component {
                 onClick={() => this.selectCollection(team.id)}
                 key={team.id}
                 type="button"
+                className="button is-small"
               >
                 {`${team.name}`}
               </button>
             ))}
+            <AddTeamForm />
           </div>
         ) : (
           <h3>Still Loading</h3>
         )}
+        <CreateCollectionForm teams={this.props.teams} />
         {this.props.collections ? (
           <div>
             {this.props.collections.length > 0 ? (
@@ -43,7 +51,6 @@ class AllCollections extends Component {
         ) : (
           <h1>Still Loading</h1>
         )}
-        <CreateCollectionForm teams={this.props.teams} />
       </div>
     )
   }
