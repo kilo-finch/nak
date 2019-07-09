@@ -1,6 +1,17 @@
 const router = require('express').Router()
 const {Collection, Links, Team, User} = require('../db/models')
-module.exports = router
+let io
+let socketPromise
+const setIO = IO => {
+  io = IO
+  socketPromise = new Promise((resolve, reject) => {
+    io.on('connection', socket => {
+      resolve(socket)
+    })
+  })
+}
+
+module.exports = {router, setIO}
 
 router.post('/:teamId', async (req, res, next) => {
   if (req.user) {
@@ -8,7 +19,12 @@ router.post('/:teamId', async (req, res, next) => {
       const {name} = req.body
       const teamId = +req.params.teamId
       const newCollection = await Collection.create({name, teamId})
-      if (newCollection) res.status(201).send(newCollection)
+      if (newCollection) {
+        //added socket here
+        const socket = await socketPromise
+        socket.to(teamId).emit('team_collection_adjusted')
+        res.status(201).send(newCollection)
+      }
     } catch (error) {
       next(error)
     }
@@ -85,6 +101,12 @@ router.put('/:collectionId', async (req, res, next) => {
           returning: true
         }
       )
+
+      //socket here
+      const teamId = updatedCollection.teamId
+      const socket = await socketPromise
+      socket.to(teamId).emit('team_collection_adjusted')
+
       res.send(updatedCollection)
     } catch (error) {
       next(error)
@@ -97,11 +119,17 @@ router.put('/:collectionId', async (req, res, next) => {
 router.delete('/:collectionId', async (req, res, next) => {
   if (req.user) {
     try {
+      const teamId = await Collection.findByPk(+req.params.collectionId)
       const deletedCollection = await Collection.destroy({
         where: {
           id: +req.params.collectionId
         }
       })
+
+      //socket here
+      const socket = await socketPromise
+      socket.to(teamId).emit('team_collection_adjusted')
+
       res.sendStatus(200)
     } catch (error) {
       next(error)

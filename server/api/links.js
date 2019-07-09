@@ -4,7 +4,18 @@ const {Fraction} = require('../utils')
 const Sequelize = require('sequelize')
 const op = Sequelize.Op
 
-module.exports = router
+let io
+let socketPromise
+const setIO = IO => {
+  io = IO
+  socketPromise = new Promise((resolve, reject) => {
+    io.on('connection', socket => {
+      resolve(socket)
+    })
+  })
+}
+
+module.exports = {router, setIO}
 
 router.delete('/', async (req, res, next) => {
   if (req.user) {
@@ -13,6 +24,8 @@ router.delete('/', async (req, res, next) => {
       const deletedLink = await Links.destroy({
         where: {id}
       })
+      //ADD SOCKET HERE
+
       res.send('successful deletion')
     } catch (error) {
       next(error)
@@ -84,6 +97,11 @@ router.post('/', async (req, res, next) => {
         return newLink
       })
       const serverLinkArr = await Links.bulkCreate(formattedLinkData)
+
+      //calling to collection that a link was changed
+      const socket = await socketPromise
+      socket.to(formattedLinkData.collectionId).emit('collection_adjusted')
+
       res.send(serverLinkArr)
     } catch (error) {
       next(error)
@@ -200,6 +218,8 @@ router.put('/reorder', async function(req, res, next) {
           answer = await source.update({orderFloat, orderFraction})
         }
       }
+
+      //set socket route here
       res.send(answer)
     } catch (error) {
       next(error)
