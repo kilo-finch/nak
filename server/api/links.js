@@ -5,15 +5,13 @@ const Sequelize = require('sequelize')
 const op = Sequelize.Op
 
 let io
-let socketPromise
-const setIO = IO => {
+let socket
+const setIO = (IO, SOCKET) => {
   io = IO
-  socketPromise = new Promise((resolve, reject) => {
-    io.on('connection', socket => {
-      resolve(socket)
-    })
-  })
+  socket = SOCKET
 }
+
+module.exports = {router, setIO}
 
 module.exports = {router, setIO}
 
@@ -99,7 +97,7 @@ router.post('/', async (req, res, next) => {
       const serverLinkArr = await Links.bulkCreate(formattedLinkData)
 
       //calling to collection that a link was changed
-      const socket = await socketPromise
+
       socket.to(formattedLinkData.collectionId).emit('collection_adjusted')
 
       res.send(serverLinkArr)

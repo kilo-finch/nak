@@ -103,11 +103,12 @@ const startListening = () => {
 
   // set up our socket control center
   const io = socketio(server)
-  require('./socket')(io)
-
-  //set up our socket center from our API index, this delegates information to our other files (routing them together)
-  const {setIO: setAPIIO} = require('./api')
-  setAPIIO(io)
+  io.on('connection', socket => {
+    console.log('CONNECTED:' + socket.id)
+    //set up our socket center from our API index, this delegates information to our other files (routing them together)
+    const {setIO: setAPIIO} = require('./api')
+    setAPIIO(io, socket)
+  })
 }
 
 // const syncDb = () => db.sync({ force: true })

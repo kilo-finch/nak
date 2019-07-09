@@ -1,6 +1,14 @@
 const router = require('express').Router()
 const {Collection, Links, Team, User} = require('../db/models')
-module.exports = router
+
+let io
+let socket
+const setIO = (IO, SOCKET) => {
+  io = IO
+  socket = SOCKET
+}
+
+module.exports = {router, setIO}
 
 router.get('/', async (req, res, next) => {
   if (req.user) {
@@ -13,9 +21,12 @@ router.get('/', async (req, res, next) => {
           }
         }
       })
-      // const user = await User.findByPk(req.user.id)
-      // const allUserTeams1 = await user.getTeams(user.id)
-
+      //connecting the user to each team room
+      console.log('JOINING ALL THE TEAMS FOR', socket.id)
+      allUserTeams.forEach(team => {
+        socket.join(team.id)
+        socket.to(team.id).emit('msg', 'hi')
+      })
       res.send(allUserTeams)
     } catch (error) {
       next(error)

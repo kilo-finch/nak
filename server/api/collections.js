@@ -1,14 +1,11 @@
 const router = require('express').Router()
 const {Collection, Links, Team, User} = require('../db/models')
+
 let io
-let socketPromise
-const setIO = IO => {
+let socket
+const setIO = (IO, SOCKET) => {
   io = IO
-  socketPromise = new Promise((resolve, reject) => {
-    io.on('connection', socket => {
-      resolve(socket)
-    })
-  })
+  socket = SOCKET
 }
 
 module.exports = {router, setIO}
@@ -21,7 +18,7 @@ router.post('/:teamId', async (req, res, next) => {
       const newCollection = await Collection.create({name, teamId})
       if (newCollection) {
         //added socket here
-        const socket = await socketPromise
+
         socket.to(teamId).emit('team_collection_adjusted')
         res.status(201).send(newCollection)
       }
@@ -75,6 +72,8 @@ router.get('/:teamId', async (req, res, next) => {
           teamId: req.params.teamId
         }
       })
+
+      console.log(io.sockets.adapter.rooms)
       res.send(selectedCollection)
     } catch (error) {
       next(error)
@@ -104,7 +103,7 @@ router.put('/:collectionId', async (req, res, next) => {
 
       //socket here
       const teamId = updatedCollection.teamId
-      const socket = await socketPromise
+
       socket.to(teamId).emit('team_collection_adjusted')
 
       res.send(updatedCollection)
@@ -127,7 +126,6 @@ router.delete('/:collectionId', async (req, res, next) => {
       })
 
       //socket here
-      const socket = await socketPromise
       socket.to(teamId).emit('team_collection_adjusted')
 
       res.sendStatus(200)
