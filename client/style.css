@@ -1,6 +1,6 @@
-body {
+/* body {
   font-family: sans-serif;
-}
+} */
 
 a {
   text-decoration: none;
@@ -22,16 +22,22 @@ form div {
 
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
-  background-color: #555;
+  background-color: #44fbaa;
   color: white;
-  padding: 16px 20px;
+  padding-bottom: 0px;
   border: none;
   cursor: pointer;
   opacity: 0.8;
   position: fixed;
   bottom: 23px;
-  right: 28px;
+  right: 10px;
   width: 50px;
+  font-weight: 900;
+  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 15%;
 }
 
 /* The popup form - hidden by default */
@@ -76,9 +82,9 @@ form div {
 }
 
 /* Full-width input fields */
-.form-container input[type='text'],
+.form-contx ainer input[type='text'],
 .form-container input[type='password'] {
-  width: 90%;
+  width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
   border: none;
@@ -94,7 +100,7 @@ form div {
 
 /* Set a style for the submit/login button */
 .form-container .btn {
-  background-color: #4caf50;
+  background-color: #44fbaa;
   color: white;
   padding: 16px 20px;
   border: none;
@@ -102,6 +108,7 @@ form div {
   width: 100%;
   margin-bottom: 10px;
   opacity: 0.8;
+  font-weight: 900;
 }
 
 /* Add a red background color to the cancel button */
@@ -113,4 +120,51 @@ form div {
 .form-container .btn:hover,
 .open-button:hover {
   opacity: 1;
+}
+
+/* Menu Options Button */
+.bread-crumbs-container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.open-menu {
+  /* background-color: transparent; */
+  /* border-block-color: transparent; */
+  border-radius: 25%;
+  /* color: white;
+  padding-bottom: 0px;
+  border: 5px;
+  cursor: pointer;
+  opacity: 0.8;
+  bottom: 25px;
+  right: 10px;
+  width: fit-content;
+  font-weight: 900;
+  font-size: 2rem;
+  width: 50px;
+  height: 35px;
+  text-align: inherit;
+  border-radius: 15%; */
+}
+
+.menu-popup {
+  display: none;
+  position: relative;
+  top: 0px;
+  bottom: 0px;
+  right: 15px;
+  /* border: 3px solid #f1f1f1; */
+  z-index: 9;
+}
+
+.edit-form-popup {
+  display: none;
+  /* position: fixed; */
+  margin-right: 80px;
+  bottom: 0;
+  right: 15px;
+  /* border: 3px solid #f1f1f1; */
+  z-index: 9;
 }

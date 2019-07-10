@@ -1,0 +1,70 @@
+@charset "utf-8";
+
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+// @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+// @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+// Set your brand colors
+$mint: #44fbaa;
+$mint-dark: #34c992;
+$white: #fff;
+$brown: #fff;
+$blue-dark: #022743;
+$blue-light: #064372;
+
+// Update Bulma's global variables
+$family-sans-serif: 'Nunito', sans-serif;
+$grey-dark: $white;
+$grey-light: $blue-light;
+$primary: $mint;
+$secondary: $mint-dark;
+$link: $mint-dark;
+$widescreen-enabled: false;
+$fullhd-enabled: false;
+
+// Update some of Bulma's component variables
+$body-background-color: $blue-dark;
+$control-border-width: 2px;
+$input-border-color: transparent;
+$input-shadow: none;
+
+//Styling for Tabs
+
+//When not active, nor hovering
+$tabs-link-color: white;
+$tabs-boxed-link-radius: 4px;
+
+//when hovering
+$tabs-boxed-link-hover-background-color: white;
+$tabs-link-hover-color: $mint;
+
+//when active
+$tabs-boxed-link-active-background-color: $mint-dark;
+$tabs-link-active-color: white;
+$tabs-boxed-link-active-border-bottom-color: white;
+$tabs-boxed-link-active-border-color: white;
+
+//Button
+$button-color: $blue-dark;
+$button-background-color: white;
+$button-border-color: $blue-dark;
+
+//Input field
+$input-border-color: $blue-dark;
+
+// Import only what you need from Bulma
+@import '../node_modules/bulma/sass/utilities/_all.sass';
+@import '../node_modules/bulma/sass/base/_all.sass';
+@import '../node_modules/bulma/sass/elements/button.sass';
+@import '../node_modules/bulma/sass/elements/container.sass';
+@import '../node_modules/bulma/sass/elements/title.sass';
+@import '../node_modules/bulma/sass/form/_all.sass';
+@import '../node_modules/bulma/sass/components/navbar.sass';
+@import '../node_modules/bulma/sass/layout/hero.sass';
+@import '../node_modules/bulma/sass/layout/section.sass';
+@import '../node_modules/bulma/sass/components/tabs.sass';
+@import '../node_modules/bulma/sass/components/_all.sass';
+@import '../node_modules/bulma/sass/elements/_all.sass';
+@import '../node_modules/bulma/sass/grid/_all.sass';
+@import '../node_modules/bulma/sass/layout/_all.sass';
