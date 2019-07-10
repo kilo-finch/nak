@@ -111,7 +111,6 @@ export default function(state = initialState, action) {
     case GOT_SELECTED_COLLECTION:
       return {...state, selectedCollection: [...action.selectedCollection]}
     case MOVE_LINKS:
-      console.log(action)
       let targetId
       const collectionId = action.collectionId
       const selectedCollection = [...state.selectedCollection]
