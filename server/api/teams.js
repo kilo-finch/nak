@@ -59,9 +59,11 @@ router.post('/', async (req, res, next) => {
         where: {email: {[op.in]: members}}
       })
       await newTeam.setUsers(newMembers)
-      const teamId = newTeam
+      //FIX THIS
+      socket.join(newTeam.id)
+      io.emit('get_all_teams')
       console.log(io.sockets.adapter.rooms)
-      io.to(teamId).emit('get_team', teamId)
+
       res.send(newTeam)
     } catch (error) {
       next(error)
@@ -98,7 +100,9 @@ router.delete('/:teamId', async (req, res, next) => {
     try {
       const teamId = +req.params.teamId
       let destroyedTeam = await Team.destroy({where: {id: teamId}})
-      io.to(teamId).emit('get_team', teamId)
+      //test if this works
+      io.to(teamId).emit('delete_team', teamId)
+      io.sockets.clients(teamId).forEach(user => user.leave(teamId))
       res.sendStatus(204).send(destroyedTeam)
     } catch (error) {
       throw error
