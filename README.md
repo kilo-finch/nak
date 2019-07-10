@@ -9,4 +9,7 @@ Please download our chrome extension here: https://github.com/kilo-finch/chromee
 Don't forget to mount the Extension! Have Fun!
 
 The NAK team -
-Cristian [https://github.com/cmart11] | Rob [https://github.com/RobertSAdams32] | Nikita [https://github.com/girkonv] | Eric [https://github.com/eutheran]
+
+[Cristian](https://github.com/cmart11) | [Rob](https://github.com/RobertSAdams32)
+
+[Nikita](https://github.com/girkonv) | [Eric](https://github.com/eutheran)
