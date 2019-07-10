@@ -58,9 +58,13 @@ class AddTeamForm extends Component {
   render() {
     return (
       <React.Fragment>
-        <button className="button is-small" onClick={this.openForm}>
+        <a
+          button
+          className="button is-link is-inverted"
+          onClick={this.openForm}
+        >
           +
-        </button>
+        </a>
         <Popup
           open={this.state.open}
           position="right center"
@@ -74,7 +78,7 @@ class AddTeamForm extends Component {
                   name="name"
                   className="input is-small"
                   type="text"
-                  placeholder="Your awesome team"
+                  placeholder="Name your team!"
                   value={this.state.name}
                   onChange={this.handleChange}
                 />

@@ -72,13 +72,22 @@ router.post('/', async (req, res, next) => {
         where: {email: {[op.in]: members}}
       })
       await newTeam.setUsers(newMembers)
-      const userIdToJoin = newMembers.map(member => member.id)
-      const teamOfSocketIds = userIdToJoin.map(id =>
-        socketIdToSocket(userIdToSocketId[id])
-      )
-      teamOfSocketIds.push(socketIdToSocket(userIdToSocketId[req.user.id]))
-      teamOfSocketIds.map(teamMemberSocket => teamMemberSocket.join(newTeam.id))
-      io.emit('get_all_teams')
+      if (members.length > 1) {
+        const userIdToJoin = newMembers.map(member => member.id)
+        const teamOfSocketIds = userIdToJoin.map(id =>
+          socketIdToSocket(userIdToSocketId[id])
+        )
+        if (newMembers) {
+          teamOfSocketIds.push(socketIdToSocket(userIdToSocketId[req.user.id]))
+          teamOfSocketIds.map(teamMemberSocket =>
+            teamMemberSocket.join(newTeam.id)
+          )
+        }
+        io.emit('get_all_teams')
+      } else {
+        socket.join(newTeam.id)
+      }
+
       res.send(newTeam)
     } catch (error) {
       next(error)
