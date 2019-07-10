@@ -79,6 +79,7 @@ router.post('/', async (req, res, next) => {
         +formattedLinkData[0].collectionId
       )
       //ioappears undefined FIX THIS
+      //make a join for all users in the team
       const teamId = collection.teamId
       io.in(teamId).emit('get_team', teamId)
       res.send(serverLinkArr)
@@ -106,10 +107,12 @@ router.put('/reorder', async function(req, res, next) {
       const answer = await Links.changeOrder(idSource, idTarget, collectionId)
       //set socket route here
       const collection = await Collection.findByPk(+req.body.collectionId)
-      const sourceId = idSource
-      const targetId = idTarget
-      const updateOrder = {sourceId, targetId, collectionId}
-      await io.to(collection.teamId).emit('move_links', updateOrder)
+      // const sourceId = idSource
+      // const targetId = idTarget
+      // const updateOrder = {sourceId, targetId, collectionId}
+      // await io.to(collection.teamId).emit('move_links', updateOrder)
+      // io.to(collection.teamId).emit('refresh_collection', collectionId)
+      io.to(collection.teamId).emit('get_team', collection.teamId)
       res.send(answer)
     } catch (error) {
       next(error)
