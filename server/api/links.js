@@ -1,11 +1,10 @@
 const router = require('express').Router()
-
 const {Links, Collection} = require('../db/models')
 const {Fraction} = require('../utils')
 const Sequelize = require('sequelize')
 const op = Sequelize.Op
 
-let io
+var io
 let socket
 const setIO = (IO, SOCKET) => {
   io = IO
@@ -76,11 +75,12 @@ router.post('/', async (req, res, next) => {
         }
       })
       const serverLinkArr = await Links.bulkCreate(formattedLinkData)
-
-      //calling to collection that a link was changed
-      const collectionId = formattedLinkData.collectionId
-      const collection = await Collection.findByPk(collectionId)
-      io.to(collection.teamId).emit('get_team', collection.teamId)
+      const collection = await Collection.findByPk(
+        +formattedLinkData[0].collectionId
+      )
+      //ioappears undefined FIX THIS
+      const teamId = collection.teamId
+      io.to(teamId).emit('get_team', teamId)
       res.send(serverLinkArr)
     } catch (error) {
       next(error)
