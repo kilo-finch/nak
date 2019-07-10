@@ -1,83 +1,129 @@
 import React, {Component} from 'react'
-// import {connect} from 'react-redux'
+import {connect} from 'react-redux'
+import {createTeamThunk} from '../store'
 import axios from 'axios'
 
 import Popup from 'reactjs-popup'
 
-export default class AddTeamForm extends Component {
+class AddTeamForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
       name: '',
-      members: []
+      members: '',
+      open: false,
+      nameError: null,
+      membersError: null
     }
   }
 
-  handleChange = event => {
-    this.setState({
+  handleChange = async event => {
+    await this.setState({
       [event.target.name]: event.target.value
     })
+    if (this.state.name.length) {
+      this.setState({nameError: null})
+    } else {
+      this.setState({nameError: 'Please, enter name of the team.'})
+    }
   }
 
-  handleSubmit = event => {
+  createTeam = event => {
     event.preventDefault()
-    const {name} = this.state
-    const id = !this.state.teamId ? this.props.teams[0].id : this.state.teamId
-    this.props.createCollection(name, id)
-    this.setState({name: '', teamId: ''})
+    if (this.state.name.length) {
+      const {name, members} = this.state
+      this.props.createTeamThunk({name, members})
+      this.setState({name: '', members: '', open: false})
+    } else {
+      this.setState({nameError: 'Please, enter name of the team.'})
+    }
+  }
+
+  closeForm = () => {
+    this.setState({open: false})
+  }
+
+  openForm = () => {
+    this.setState({open: true})
+  }
+
+  cancelForm = () => {
+    this.setState({
+      name: '',
+      members: '',
+      open: false
+    })
   }
 
   render() {
     return (
-      <Popup
-        trigger={<button className="button is-small"> Trigger</button>}
-        position="right center"
-      >
-        <div className="control">
-          <div className="field">
-            <label className="label is-small">Team's name</label>
-            <div className="control">
-              <input
-                name="name"
-                className="input is-small"
-                type="text"
-                placeholder="Your awesome team"
-                value={this.state.name}
-                onChange={this.handleChange}
-              />
+      <React.Fragment>
+        <button className="button is-small" onClick={this.openForm}>
+          +
+        </button>
+        <Popup
+          open={this.state.open}
+          position="right center"
+          onClose={this.closeForm}
+        >
+          <div className="control">
+            <div className="field">
+              <label className="label is-small">Team's name</label>
+              <div className="control">
+                <input
+                  name="name"
+                  className="input is-small"
+                  type="text"
+                  placeholder="Your awesome team"
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <p className="help is-danger">{this.state.nameError}</p>
+            </div>
+            <div className="field">
+              <label className="label  is-small">Members</label>
+              <div className="control">
+                <input
+                  name="members"
+                  className="input is-small"
+                  type="text"
+                  placeholder="email of team member"
+                  value={this.state.members}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <p className="help is-danger">{this.state.membersError}</p>
+            </div>
+            <div className="field is-grouped">
+              <div className="control">
+                <button
+                  className="button is-link is-small"
+                  onClick={this.createTeam}
+                >
+                  Create
+                </button>
+              </div>
+              <div className="control">
+                <button
+                  className="button is-text is-small"
+                  onClick={this.cancelForm}
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
-          <div className="field">
-            <label className="label  is-small">Members</label>
-            <div className="control">
-              <input
-                name="members"
-                className="input is-small"
-                type="text"
-                placeholder="email of team member"
-                value={this.state.members}
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
-          <div className="field is-grouped">
-            <div className="control">
-              <button className="button is-link is-small">Create</button>
-            </div>
-            <div className="control">
-              <button className="button is-text is-small">Cancel</button>
-            </div>
-          </div>
-        </div>
-      </Popup>
+        </Popup>
+      </React.Fragment>
     )
   }
 }
 
 // FINISH THIS WITH ADDLINKTHUNK
-// const mapDispatch = dispatch => ({
-//   createCollection: (name, teamId) => dispatch(createCollection(name, teamId))
-// })
+const mapDispatch = dispatch => ({
+  createTeamThunk: team => dispatch(createTeamThunk(team))
+})
 
 // const mapState = state => {
 //   return {
@@ -86,4 +132,4 @@ export default class AddTeamForm extends Component {
 //   }
 // }
 
-// export default connect(mapState)(AddTeamForm)
+export default connect(null, mapDispatch)(AddTeamForm)
