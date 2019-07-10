@@ -42,7 +42,7 @@ const cardTarget = {
     }
 
     // Time to actually perform the action
-    props.moveLinks(dragIndex, hoverIndex, props.link.collectionId)
+    props.moveLinks(dragId, hoverId, props.link.collectionId)
     // Note: we're mutating the monitor item here!
     // Generally it's better to avoid mutations,
     // but it's good here for the sake of performance

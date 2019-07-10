@@ -116,12 +116,14 @@ export default function(state = initialState, action) {
       const selectedCollection = [...state.selectedCollection]
       const newSelectedCollection = selectedCollection.map(el => {
         if (el.id === collectionId) {
-          let newCollection = {...el, links: el.links}
+          const newCollection = {...el, links: el.links}
           let links = newCollection.links
-          targetId = links[action.targetId].id //hover action.targetId
-          let temp = links[action.sourceId] //drag and target
-          links.splice(action.sourceId, 1)
-          links.splice(action.targetId, 0, temp)
+          const targetIndex = links.findIndex(li => li.id === action.targetId)
+          const sourceIndex = links.findIndex(li => li.id === action.sourceId)
+          targetId = links[targetIndex].id
+          const temp = links[sourceIndex]
+          links.splice(sourceIndex, 1)
+          links.splice(targetIndex, 0, temp)
           return newCollection
         }
         return el
