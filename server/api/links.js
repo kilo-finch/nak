@@ -13,9 +13,9 @@ const setIO = (IO, SOCKET) => {
 
 module.exports = {router, setIO}
 
-router.delete('/', async (req, res, next) => {
+router.delete('/:linkId', async (req, res, next) => {
   if (req.user) {
-    const {id} = req.body
+    const id = +req.params.linkId
     try {
       const link = await Links.findByPk(id)
       const collection = await Collection.findByPk(link.collectionId)

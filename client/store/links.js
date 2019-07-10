@@ -32,11 +32,6 @@ const addLink = link => ({
   link
 })
 
-const removeLink = linkId => ({
-  type: REMOVE_LINK,
-  link
-})
-
 const removeAllFromCollection = collectionID => ({
   type: REMOVE_ALL_FROM_COLLECTION,
   collectionID
@@ -55,14 +50,14 @@ export const getAllLinksThunk = collectionId => async dispatch => {
   }
 }
 
-export const removeLinkThunk = linkId => async dispatch => {
-  try {
-    await axios.destroy(`/api/links/${linkId}`)
-    dispatch(removeLink(linkId))
-  } catch (error) {
-    throw error
-  }
-}
+// export const removeLinkThunk = linkId => async dispatch => {
+//   try {
+//     await axios.destroy(`/api/links/${linkId}`)
+//     dispatch(removeLink(linkId))
+//   } catch (error) {
+//     throw error
+//   }
+// }
 
 /**
  * REDUCER
@@ -72,12 +67,6 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case GET_LINKS_FROM_COLLECTION:
       return {...state, allLinksFromCollection: [action.allLinks]}
-    case REMOVE_LINK: {
-      const filteredLinks = state.allLinksFromCollection.filter(
-        link => link.id !== action.linkId
-      )
-      return {...state, allLinksFromCollection: filteredLinks}
-    }
     default:
       return state
   }

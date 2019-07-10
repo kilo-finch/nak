@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {flow} from 'lodash'
 import {moveLinks, nullTargetId, sendChangesToDb} from '../store'
 import {DragSource, DropTarget} from 'react-dnd'
+import {removeLinkThunk} from '../store/collections'
 
 const Types = {
   CARD: 'CARD'
@@ -57,7 +58,7 @@ const connectTarget = conn => ({
 
 // need to pass props to cmpnt
 function linkCard(props) {
-  const {link} = props
+  const {link, deleteLink} = props
 
   const {isDragging, connectDragSource, connectDropTarget} = props
   const opacity = isDragging ? 0 : 1
@@ -72,7 +73,7 @@ function linkCard(props) {
             <a className="tag is-link" href={link.url}>
               {link.title}
             </a>
-            <a className="tag is-delete" />
+            <a className="tag is-delete" onClick={() => deleteLink(link.id)} />
           </div>
         </div>
       )
@@ -84,7 +85,8 @@ const mapDispatch = dispatch => ({
   moveLinks: (sourceId, targetId, collectionId) =>
     dispatch(moveLinks(sourceId, targetId, collectionId)),
   nullTargetId: () => dispatch(nullTargetId()),
-  sendChangesToDb: link => dispatch(sendChangesToDb(link))
+  sendChangesToDb: link => dispatch(sendChangesToDb(link)),
+  deleteLink: linkId => dispatch(removeLinkThunk(linkId))
 })
 
 const mapState = state => ({
