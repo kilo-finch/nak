@@ -19,6 +19,7 @@ const NULL_TARGETID = 'NULL_TARGETID'
 const UPDATE_COLLECTION = 'UPDATE_COLLECTION'
 const DELETE_COLLECTION = 'DELETE_COLLECTION'
 const CREATE_COLLECTION = 'CREATE_COLLECTION'
+const REMOVE_LINK = 'REMOVE_LINK'
 
 /**
  * ACTION CREATORS
@@ -50,6 +51,11 @@ export const deleteCollection = deletedCollection => ({
 export const createdCollection = newCollection => ({
   type: CREATE_COLLECTION,
   newCollection
+})
+
+const removeLink = linkId => ({
+  type: REMOVE_LINK,
+  linkId
 })
 
 /**
@@ -98,6 +104,15 @@ export const deleteCollectionThunk = collectionId => async dispatch => {
   try {
     const res = await axios.delete(`api/collections/${collectionId}`)
     dispatch(deleteCollection(collectionId))
+  } catch (error) {
+    throw error
+  }
+}
+
+export const removeLinkThunk = linkId => async dispatch => {
+  try {
+    await axios.delete(`/api/links/${linkId}`)
+    dispatch(removeLink(linkId))
   } catch (error) {
     throw error
   }
@@ -159,6 +174,12 @@ export default function(state = initialState, action) {
         ...state,
         selectedCollection: [...state.selectedCollection, action.newCollection]
       }
+    case REMOVE_LINK: {
+      const filteredLinks = state.selectedCollection.filter(
+        link => link.id !== action.linkId
+      )
+      return {...state, selectedCollection: filteredLinks}
+    }
     default:
       return state
   }

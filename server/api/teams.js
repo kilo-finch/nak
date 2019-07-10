@@ -26,7 +26,6 @@ router.get('/', async (req, res, next) => {
       allUserTeams.forEach(team => {
         socket.join(team.id)
       })
-      // console.log(io.sockets.adapter.rooms)
       res.send(allUserTeams)
     } catch (error) {
       next(error)
@@ -60,6 +59,9 @@ router.post('/', async (req, res, next) => {
         where: {email: {[op.in]: members}}
       })
       await newTeam.setUsers(newMembers)
+      const teamId = newTeam
+      console.log(io.sockets.adapter.rooms)
+      io.to(teamId).emit('get_team', teamId)
       res.send(newTeam)
     } catch (error) {
       next(error)
