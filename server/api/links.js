@@ -80,7 +80,7 @@ router.post('/', async (req, res, next) => {
       )
       //ioappears undefined FIX THIS
       const teamId = collection.teamId
-      io.to(teamId).emit('get_team', teamId)
+      io.in(teamId).emit('get_team', teamId)
       res.send(serverLinkArr)
     } catch (error) {
       next(error)

@@ -7,7 +7,7 @@ import history from '../history'
  * INITIAL STATE
  */
 
-const initialState = []
+const initialState = {allLinksFromCollection: []}
 
 /**
  * ACTION TYPES
@@ -22,9 +22,9 @@ const REMOVE_ALL_FROM_COLLECTION = 'REMOVE_ALL_FROM_COLLECTION'
  * ACTION CREATORS
  */
 
-const getLinks = collectionID => ({
+const getAllLinks = allLinks => ({
   type: GET_LINKS_FROM_COLLECTION,
-  collectionID
+  allLinks
 })
 
 const addLink = link => ({
@@ -32,7 +32,7 @@ const addLink = link => ({
   link
 })
 
-const removeLink = link => ({
+const removeLink = linkId => ({
   type: REMOVE_LINK,
   link
 })
@@ -46,7 +46,23 @@ const removeAllFromCollection = collectionID => ({
  * THUNK CREATORS
  */
 
-//WRITE THESE WHEN BACKEND IS UP AND RUNNING
+export const getAllLinksThunk = collectionId => async dispatch => {
+  try {
+    const res = await axios.get(`/api/collections/${collectionId}`)
+    dispatch(getAllLinks(res.data))
+  } catch (error) {
+    throw error
+  }
+}
+
+export const removeLinkThunk = linkId => async dispatch => {
+  try {
+    await axios.destroy(`/api/links/${linkId}`)
+    dispatch(removeLink(linkId))
+  } catch (error) {
+    throw error
+  }
+}
 
 /**
  * REDUCER
@@ -54,6 +70,14 @@ const removeAllFromCollection = collectionID => ({
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GET_LINKS_FROM_COLLECTION:
+      return {...state, allLinksFromCollection: [action.allLinks]}
+    case REMOVE_LINK: {
+      const filteredLinks = state.allLinksFromCollection.filter(
+        link => link.id !== action.linkId
+      )
+      return {...state, allLinksFromCollection: filteredLinks}
+    }
     default:
       return state
   }
