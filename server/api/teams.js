@@ -79,8 +79,6 @@ router.post('/', async (req, res, next) => {
       teamOfSocketIds.push(socketIdToSocket(userIdToSocketId[req.user.id]))
       teamOfSocketIds.map(teamMemberSocket => teamMemberSocket.join(newTeam.id))
       io.emit('get_all_teams')
-      // console.log(io.sockets.adapters.sid)
-
       res.send(newTeam)
     } catch (error) {
       next(error)
