@@ -22,14 +22,20 @@ const SingleCollection = props => {
           style={{overflowY: 'auto', maxHeight: '600px', padding: '5px'}}
         >
           {collection.links ? (
-            collection.links.map((link, index) => (
-              <LinkCard link={link} index={index} key={link.id} />
-            ))
+            <div>
+              {collection.links.length > 0 ? (
+                collection.links.map((link, index) => (
+                  <LinkCard link={link} index={index} key={link.id} />
+                ))
+              ) : (
+                <h3>
+                  You have no links saved in your collection! Add a link to get
+                  started.
+                </h3>
+              )}
+            </div>
           ) : (
-            <h3>
-              You have no links saved in your collection! Add a link to get
-              started.
-            </h3>
+            <h3>Still Loading</h3>
           )}
         </div>
       </div>

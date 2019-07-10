@@ -5,12 +5,33 @@ import {selectedCollectionThunk, allTeamsThunk} from '../store'
 import {Link, Route} from 'react-router-dom'
 
 class AllCollections extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentSelection: null
+    }
+  }
+
   async componentDidMount() {
     await this.props.getAllTeams()
     await this.props.getSelectedCollection(this.props.teams[0].id)
+    this.selectCollection(this.props.teams[0].id)
   }
 
   selectCollection(selection) {
+    let selectedCollection = document.getElementsByClassName(
+      `teamName${selection}`
+    )[0]
+    if (
+      this.state.currentSelection !== null &&
+      this.state.currentSelection.className !== selectedCollection.className
+    ) {
+      this.state.currentSelection.classList.toggle('is-active')
+      selectedCollection.classList.toggle('is-active')
+    } else if (this.state.currentSelection === null) {
+      selectedCollection.classList.toggle('is-active')
+    }
+    this.setState({currentSelection: selectedCollection})
     this.props.getSelectedCollection(selection)
   }
 
@@ -21,13 +42,20 @@ class AllCollections extends Component {
           <div className="tabs is-boxed is-toggled">
             <ul>
               {this.props.teams.map(team => (
-                <li className="tab" style={{marginRight: '5px'}}>
+                <li
+                  className={`teamName${team.id}`}
+                  style={{
+                    marginRight: '5px',
+                    backgroundColor: '#34c992',
+                    borderTopLeftRadius: '4px',
+                    borderTopRightRadius: '4px'
+                  }}
+                >
                   <a
                     onClick={() => this.selectCollection(team.id)}
                     key={team.id}
                     type="button"
                     className="has-text-weight-bold"
-                    style={{color: '#fff', backgroundColor: '#34c992'}}
                   >
                     {`${team.name}`}
                   </a>

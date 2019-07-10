@@ -97,3 +97,48 @@ form div {
 .open-button:hover {
   opacity: 1;
 }
+
+/* Menu Options Button */
+.bread-crumbs-container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.open-menu {
+  background-color: #44fbaa;
+  color: white;
+  padding-bottom: 0px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  bottom: 23px;
+  right: 10px;
+  width: 50px;
+  font-weight: 900;
+  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 15%;
+}
+
+.menu-popup {
+  display: none;
+  position: relative;
+  top: 0px;
+  bottom: 0px;
+  right: 15px;
+  /* border: 3px solid #f1f1f1; */
+  z-index: 9;
+}
+
+.edit-form-popup {
+  display: none;
+  /* position: fixed; */
+  margin-right: 25px;
+  bottom: 0;
+  right: 15px;
+  /* border: 3px solid #f1f1f1; */
+  z-index: 9;
+}
