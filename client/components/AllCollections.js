@@ -14,8 +14,13 @@ class AllCollections extends Component {
 
   async componentDidMount() {
     await this.props.getAllTeams()
-    await this.props.getSelectedCollection(this.props.teams[0].id)
-    this.selectCollection(this.props.teams[0].id)
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (this.props.teams !== prevProps.teams) {
+      this.props.getSelectedCollection(this.props.teams[0].id)
+      this.selectCollection(this.props.teams[0].id)
+    }
   }
 
   selectCollection(selection) {
@@ -50,6 +55,7 @@ class AllCollections extends Component {
                     borderTopLeftRadius: '4px',
                     borderTopRightRadius: '4px'
                   }}
+                  key={team.id}
                 >
                   <a
                     onClick={() => this.selectCollection(team.id)}

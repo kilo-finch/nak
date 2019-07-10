@@ -100,10 +100,16 @@ router.delete('/:collectionId', async (req, res, next) => {
     try {
       const deletedCollection = await Collection.destroy({
         where: {
-          id: +req.params.collectionId
+          id: +req.params.collectionId,
+          userPersonalCollection: false
         }
       })
-      res.sendStatus(200)
+      console.log(deletedCollection)
+      if (deletedCollection > 0) {
+        res.sendStatus(200)
+      } else {
+        throw 'Cannot Delete Personal Collection'
+      }
     } catch (error) {
       next(error)
     }

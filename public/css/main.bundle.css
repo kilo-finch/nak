@@ -1325,10 +1325,10 @@ a.has-text-danger:focus {
 }
 
 .button {
-  background-color: #fff;
-  border-color: #dbdbdb;
+  background-color: white;
+  border-color: #022743;
   border-width: 2px;
-  color: #363636;
+  color: #022743;
   cursor: pointer;
   justify-content: center;
   padding-bottom: calc(0.375em - 2px);
@@ -2684,7 +2684,7 @@ fieldset[disabled] .button {
 .textarea,
 .select select {
   background-color: #fff;
-  border-color: transparent;
+  border-color: #022743;
   border-radius: 4px;
   color: #363636;
 }
@@ -8253,10 +8253,10 @@ a.box:active {
 }
 
 .button {
-  background-color: #fff;
-  border-color: #dbdbdb;
+  background-color: white;
+  border-color: #022743;
   border-width: 2px;
-  color: #363636;
+  color: #022743;
   cursor: pointer;
   justify-content: center;
   padding-bottom: calc(0.375em - 2px);

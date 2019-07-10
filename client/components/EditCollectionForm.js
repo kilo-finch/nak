@@ -34,7 +34,10 @@ class EditCollectionForm extends Component {
     return (
       <div>
         <div>
-          <form onSubmit={this.handleSubmit} className="editform-container">
+          <form
+            onSubmit={this.handleSubmit}
+            className="editform-container level"
+          >
             <label htmlFor="collectionName" />
             <input
               required
@@ -42,10 +45,10 @@ class EditCollectionForm extends Component {
               name="collectionName"
               value={this.state.collectionName}
               onChange={event => this.handleChange(event)}
-              className="input"
+              className="input level-item"
             />
-            <button type="submit" className="button is-small">
-              Submit
+            <button type="submit" className="button is-small level-item">
+              Update
             </button>
           </form>
         </div>

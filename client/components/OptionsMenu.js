@@ -42,7 +42,7 @@ class OptionsMenu extends Component {
         editForm.style.display = 'none'
       }
     } else {
-      optionsMenu.style.display = 'block'
+      optionsMenu.style.display = 'none'
     }
   }
 
@@ -78,7 +78,7 @@ class OptionsMenu extends Component {
       <div className="level bread-crumbs-container">
         <button
           type="button"
-          className="level-item open-menu"
+          className="level-item open-menu button"
           onClick={this.openOptions}
         >
           ...
@@ -90,14 +90,16 @@ class OptionsMenu extends Component {
           <button onClick={this.openForm} className="button">
             Edit Title
           </button>
-          <button
-            onClick={() => {
-              deleteCollection(collection.id)
-            }}
-            className="button"
-          >
-            Delete Collection
-          </button>
+          {!collection.userPersonalCollection && (
+            <button
+              onClick={() => {
+                deleteCollection(collection.id)
+              }}
+              className="button"
+            >
+              Delete Collection
+            </button>
+          )}
         </div>
         <div
           className="level-item edit-form-popup"
