@@ -17,7 +17,6 @@ router.post('/:teamId', async (req, res, next) => {
       const teamId = +req.params.teamId
       const newCollection = await Collection.create({name, teamId})
       //added socket here
-      console.log(io)
       io.to(teamId).emit('get_team', teamId)
       res.status(201).send(newCollection)
     } catch (error) {

@@ -78,7 +78,6 @@ router.post('/', async (req, res, next) => {
       const collection = await Collection.findByPk(
         +formattedLinkData[0].collectionId
       )
-      //ioappears undefined FIX THIS
       //make a join for all users in the team
       const teamId = collection.teamId
       io.in(teamId).emit('get_team', teamId)
