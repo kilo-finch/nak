@@ -25,7 +25,11 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <div style={{margin: '0'}}>
             {/* The navbar will show these links after you log in */}
             {/* <Link to="/home">Home</Link> */}
-            <a href="#" onClick={handleClick} className="level-item is-size-5">
+            <a
+              href="#"
+              onClick={handleClick}
+              className="level-item is-size-5 has-text-weight-bold"
+            >
               Logout
             </a>
           </div>
