@@ -4,6 +4,15 @@ const op = require('sequelize').Op
 
 let io
 let socket
+let userIdToSocketId = {}
+
+const socketIdToSocket = socketId => {
+  let namespace = null
+  let ns = io.of(namespace || '/')
+  let userSocket = ns.connected[socketId]
+  return userSocket
+}
+
 const setIO = (IO, SOCKET) => {
   io = IO
   socket = SOCKET
@@ -13,6 +22,9 @@ module.exports = {router, setIO}
 
 router.get('/', async (req, res, next) => {
   if (req.user) {
+    if (!userIdToSocketId[req.user.id]) {
+      userIdToSocketId[req.user.id] = socket.id
+    }
     try {
       const allUserTeams = await Team.findAll({
         include: {
@@ -26,6 +38,7 @@ router.get('/', async (req, res, next) => {
       allUserTeams.forEach(team => {
         socket.join(team.id)
       })
+
       res.send(allUserTeams)
     } catch (error) {
       next(error)
@@ -59,10 +72,14 @@ router.post('/', async (req, res, next) => {
         where: {email: {[op.in]: members}}
       })
       await newTeam.setUsers(newMembers)
-      //FIX THIS
-      socket.join(newTeam.id)
+      const userIdToJoin = newMembers.map(member => member.id)
+      const teamOfSocketIds = userIdToJoin.map(id =>
+        socketIdToSocket(userIdToSocketId[id])
+      )
+      teamOfSocketIds.push(socketIdToSocket(userIdToSocketId[req.user.id]))
+      teamOfSocketIds.map(teamMemberSocket => teamMemberSocket.join(newTeam.id))
       io.emit('get_all_teams')
-      console.log(io.sockets.adapter.rooms)
+      // console.log(io.sockets.adapters.sid)
 
       res.send(newTeam)
     } catch (error) {
