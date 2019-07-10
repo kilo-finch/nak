@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {Collection, Links, Team, User} = require('../db/models')
+const op = require('sequelize').Op
 
 let io
 let socket
@@ -50,7 +51,15 @@ router.post('/', async (req, res, next) => {
   if (req.user) {
     try {
       const newTeam = await Team.create({name: req.body.name})
-      await req.user.addTeam(newTeam)
+      let members = []
+      if (req.body.members) {
+        members = req.body.members.split(',')
+      }
+      members.push(req.user.email)
+      const newMembers = await User.findAll({
+        where: {email: {[op.in]: members}}
+      })
+      await newTeam.setUsers(newMembers)
       res.send(newTeam)
     } catch (error) {
       next(error)
