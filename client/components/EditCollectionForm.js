@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import {updateCollectionThunk} from '../store'
 import {connect} from 'react-redux'
-
-//CREATE ADDLINKTHUNK AND CALL IT HERE
+import '../style.css'
 
 class EditCollectionForm extends Component {
   constructor(props) {
@@ -28,41 +27,25 @@ class EditCollectionForm extends Component {
       event.target.collectionName.value,
       this.props.collection.id
     )
-    await this.props.resetSelectMode()
-  }
-  ////////////////////////////////
-  openForm = () => {
-    document.getElementById('myForm').style.display = 'block'
+    await this.props.closeForm()
   }
 
-  closeForm = () => {
-    document.getElementById('myForm').style.display = 'none'
-  }
-  ///////////////////////////////
   render() {
     return (
       <div>
         <div>
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="collectionName">
-              <b>Collection Name:</b>
-            </label>
+          <form onSubmit={this.handleSubmit} className="editform-container">
+            <label htmlFor="collectionName" />
             <input
               required
               type="text"
               name="collectionName"
               value={this.state.collectionName}
               onChange={event => this.handleChange(event)}
+              className="input"
             />
-            <button type="submit" className="btn">
+            <button type="submit" className="button is-small">
               Submit
-            </button>
-            <button
-              type="button"
-              className="btn cancel"
-              onClick={this.props.resetSelectMode}
-            >
-              Close
             </button>
           </form>
         </div>
