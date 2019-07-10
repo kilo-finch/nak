@@ -65,7 +65,8 @@ const createApp = () => {
 
   // auth and api routes
   app.use('/auth', require('./auth'))
-  app.use('/api', require('./api'))
+  const {router: apiRouter} = require('./api')
+  app.use('/api', apiRouter)
 
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, '..', 'public')))
@@ -102,7 +103,12 @@ const startListening = () => {
 
   // set up our socket control center
   const io = socketio(server)
-  require('./socket')(io)
+  io.on('connection', socket => {
+    console.log('CONNECTED:' + socket.id)
+    //set up our socket center from our API index, this delegates information to our other files (routing them together)
+    const {setIO: setAPIIO} = require('./api')
+    setAPIIO(io, socket)
+  })
 }
 
 // const syncDb = () => db.sync({ force: true })

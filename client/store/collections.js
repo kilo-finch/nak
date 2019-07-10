@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import axios from 'axios'
 // import history from '../history'
 import store from '.'
@@ -15,15 +16,15 @@ const initialState = {
 const GOT_SELECTED_COLLECTION = 'GOT_SELECTED_COLLECTION'
 const MOVE_LINKS = 'MOVE_LINKS'
 const NULL_TARGETID = 'NULL_TARGETID'
-
 const UPDATE_COLLECTION = 'UPDATE_COLLECTION'
 const DELETE_COLLECTION = 'DELETE_COLLECTION'
 const CREATE_COLLECTION = 'CREATE_COLLECTION'
+const REMOVE_LINK = 'REMOVE_LINK'
 
 /**
  * ACTION CREATORS
  */
-const gotSelectedCollection = selectedCollection => ({
+export const gotSelectedCollection = selectedCollection => ({
   type: GOT_SELECTED_COLLECTION,
   selectedCollection
 })
@@ -37,19 +38,24 @@ export const moveLinks = (sourceId, targetId, collectionId) => ({
 
 export const nullTargetId = () => ({type: NULL_TARGETID})
 
-const updateCollection = updatedCollection => ({
+export const updateCollection = updatedCollection => ({
   type: UPDATE_COLLECTION,
   updatedCollection
 })
 
-const deleteCollection = deletedCollection => ({
+export const deleteCollection = deletedCollection => ({
   type: DELETE_COLLECTION,
   deletedCollection
 })
 
-const createdCollection = newCollection => ({
+export const createdCollection = newCollection => ({
   type: CREATE_COLLECTION,
   newCollection
+})
+
+const removeLink = linkId => ({
+  type: REMOVE_LINK,
+  linkId
 })
 
 /**
@@ -103,6 +109,15 @@ export const deleteCollectionThunk = collectionId => async dispatch => {
   }
 }
 
+export const removeLinkThunk = linkId => async dispatch => {
+  try {
+    await axios.delete(`/api/links/${linkId}`)
+    dispatch(removeLink(linkId))
+  } catch (error) {
+    throw error
+  }
+}
+
 /**
  * REDUCER
  */
@@ -116,12 +131,14 @@ export default function(state = initialState, action) {
       const selectedCollection = [...state.selectedCollection]
       const newSelectedCollection = selectedCollection.map(el => {
         if (el.id === collectionId) {
-          let newCollection = {...el, links: el.links}
+          const newCollection = {...el, links: el.links}
           let links = newCollection.links
-          targetId = links[action.targetId].id
-          let temp = links[action.sourceId]
-          links.splice(action.sourceId, 1)
-          links.splice(action.targetId, 0, temp)
+          const targetIndex = links.findIndex(li => li.id === action.targetId)
+          const sourceIndex = links.findIndex(li => li.id === action.sourceId)
+          targetId = links[targetIndex].id
+          const temp = links[sourceIndex]
+          links.splice(sourceIndex, 1)
+          links.splice(targetIndex, 0, temp)
           return newCollection
         }
         return el
@@ -157,6 +174,12 @@ export default function(state = initialState, action) {
         ...state,
         selectedCollection: [...state.selectedCollection, action.newCollection]
       }
+    case REMOVE_LINK: {
+      const filteredLinks = state.selectedCollection.filter(
+        link => link.id !== action.linkId
+      )
+      return {...state, selectedCollection: filteredLinks}
+    }
     default:
       return state
   }

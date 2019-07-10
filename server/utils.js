@@ -14,7 +14,7 @@ const Fraction = class {
 
   insertLeft() {
     let currNode = new Fraction()
-    while (!currNode.l(this)) {
+    while (!currNode.l(this) || currNode.e(this)) {
       const newNode = currNode.add(currNode.left)
       newNode.left = currNode.left
       newNode.right = currNode
@@ -25,7 +25,7 @@ const Fraction = class {
 
   insertRight() {
     let currNode = new Fraction()
-    while (currNode.l(this)) {
+    while (currNode.l(this) || currNode.e(this)) {
       const newNode = currNode.add(currNode.right)
       newNode.left = currNode
       newNode.right = currNode.right

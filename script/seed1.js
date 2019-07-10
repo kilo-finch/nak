@@ -9,12 +9,35 @@ async function seed() {
 
   const createLinks = async () => {
     try {
-      const user = await User.create({
-        email: 'a@mail.ru',
-        password: '1',
-        firstName: 'Nikita',
-        lastName: 'Bublik'
-      })
+      const user = await User.bulkCreate(
+        [
+          {
+            email: 'a@mail.ru',
+            password: '1',
+            firstName: 'Nikita',
+            lastName: 'Bublik'
+          },
+          {
+            email: 'b@mail.ru',
+            password: '1',
+            firstName: 'Nikita',
+            lastName: 'Bublik'
+          },
+          {
+            email: 'c@mail.ru',
+            password: '1',
+            firstName: 'Nikita',
+            lastName: 'Bublik'
+          },
+          {
+            email: 'd@mail.ru',
+            password: '1',
+            firstName: 'Nikita',
+            lastName: 'Bublik'
+          }
+        ],
+        {individualHooks: true}
+      )
 
       const collection = Collection.findByPk(1)
 
