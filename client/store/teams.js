@@ -12,6 +12,7 @@ const initialState = {allTeams: []}
  */
 
 const GOT_ALL_TEAMS = 'GOT_ALL_TEAMS'
+const GET_SINGLE_TEAM = 'GET_SINGLE_TEAM'
 const DELETE_TEAM = 'DELETE_TEAM'
 const UPDATE_TEAM = 'UPDATE_TEAM'
 const CREATE_TEAM = 'CREATE_TEAM'
@@ -21,28 +22,33 @@ const ADD_USER_TO_TEAM = 'ADD_USER_TO_TEAM'
  * ACTION CREATORS
  */
 
-const gotAllTeams = allTeams => ({
+export const gotAllTeams = allTeams => ({
   type: GOT_ALL_TEAMS,
   allTeams
 })
 
-const createTeam = team => ({
+export const getSingleTeam = team => ({
+  type: GET_SINGLE_TEAM,
+  team
+})
+
+export const createTeam = team => ({
   type: CREATE_TEAM,
   team
 })
 
-const deleteTeam = teamId => ({
+export const deleteTeam = teamId => ({
   type: DELETE_TEAM,
   teamId
 })
 
-const updateTeam = (teamId, team) => ({
+export const updateTeam = (teamId, team) => ({
   type: UPDATE_TEAM,
   teamId,
   team
 })
 
-const addUserToTeam = (teamId, userEmail) => ({
+export const addUserToTeam = (teamId, userEmail) => ({
   type: ADD_USER_TO_TEAM,
   teamId,
   userEmail
@@ -56,6 +62,15 @@ export const allTeamsThunk = () => async dispatch => {
   try {
     const res = await axios.get('/api/teams')
     dispatch(gotAllTeams(res.data))
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getSingleTeamThunk = teamId => async dispatch => {
+  try {
+    const res = await axios.get(`/api/teams/${teamId}`)
+    dispatch(getSingleTeam(res.data))
   } catch (error) {
     throw error
   }
@@ -105,6 +120,8 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case GOT_ALL_TEAMS:
       return {...state, allTeams: [...action.allTeams]}
+    case GET_SINGLE_TEAM:
+      return {...state, allTeams: [state.allTeams, ...action.team]}
     case CREATE_TEAM:
       return {...state, allTeams: [...state.allTeams, action.team]}
     case DELETE_TEAM: {
