@@ -70,7 +70,10 @@ function linkCard(props) {
       connectDropTarget(
         <div style={{opacity, marginLeft: '10px'}}>
           <div className="tags has-addons level">
-            <div className="" style={{marginRight: '5px'}}>
+            <div
+              className=""
+              style={{marginRight: '5px', marginBottom: '15px'}}
+            >
               <img
                 src={link.favicon}
                 width="20px"

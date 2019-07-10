@@ -45,6 +45,14 @@ $tabs-link-active-color: white;
 $tabs-boxed-link-active-border-bottom-color: white;
 $tabs-boxed-link-active-border-color: white;
 
+//Button
+$button-color: $blue-dark;
+$button-background-color: white;
+$button-border-color: $blue-dark;
+
+//Input field
+$input-border-color: $blue-dark;
+
 // Import only what you need from Bulma
 @import '../node_modules/bulma/sass/utilities/_all.sass';
 @import '../node_modules/bulma/sass/base/_all.sass';

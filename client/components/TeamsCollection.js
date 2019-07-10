@@ -17,7 +17,7 @@ const collectionContainer = {
 const collectionHeader = {
   background: 'linear-gradient(135deg, #34c992 0%,#44fbaa 99%)',
   // backgroundColor: "#34c992",
-  padding: '15px',
+  padding: '5px',
   borderTopLeftRadius: '12px',
   borderTopRightRadius: '12px'
 }
@@ -66,7 +66,11 @@ class TeamsCollection extends Component {
             <div key={collection.id} style={collectionContainer}>
               <div className="level" style={collectionHeader}>
                 <div className="level-left">
-                  <h3 className=" level-left is-size-4 has-text-weight-bold">
+                  <h3
+                    className=" level-left is-size-4 has-text-weight-bold"
+                    style={{marginLeft: '8px'}}
+                  >
+                    {collection.userPersonalCollection ? '☆ ' : ''}
                     {collection.name}
                   </h3>
                 </div>

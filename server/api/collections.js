@@ -115,11 +115,16 @@ router.delete('/:collectionId', async (req, res, next) => {
       const collection = await Collection.findByPk(+req.params.collectionId)
       const deletedCollection = await Collection.destroy({
         where: {
-          id: +req.params.collectionId
+          id: +req.params.collectionId,
+          userPersonalCollection: false
         }
       })
-
-      //socket here
+      console.log(deletedCollection)
+      if (deletedCollection > 0) {
+        res.sendStatus(200)
+      } else {
+        throw 'Cannot Delete Personal Collection'
+      }
       io.to(collection.teamId).emit('get_team', collection.teamId)
       res.sendStatus(200)
     } catch (error) {
