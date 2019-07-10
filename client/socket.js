@@ -11,8 +11,11 @@ socket.on('get_team', async teamId => {
   await store.dispatch(selectedCollectionThunk(teamId))
 })
 
-socket.on('move_links', ({sourceId, targetId, collectionId} = updateOrder) => {
-  store.dispatch(moveLinks(sourceId, targetId, collectionId))
-})
+socket.on(
+  'move_links',
+  async ({sourceId, targetId, collectionId} = updateOrder) => {
+    await store.dispatch(moveLinks(sourceId, targetId, collectionId))
+  }
+)
 
 export default socket

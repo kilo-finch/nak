@@ -109,8 +109,7 @@ router.put('/reorder', async function(req, res, next) {
       const sourceId = idSource
       const targetId = idTarget
       const updateOrder = {sourceId, targetId, collectionId}
-      //fix this IO
-      // io.to(collection.teamId).emit('move_links', updateOrder)
+      await io.to(collection.teamId).emit('move_links', updateOrder)
       res.send(answer)
     } catch (error) {
       next(error)
