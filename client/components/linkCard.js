@@ -4,6 +4,7 @@ import {flow} from 'lodash'
 import {moveLinks, nullTargetId, sendChangesToDb} from '../store'
 import {DragSource, DropTarget} from 'react-dnd'
 import {removeLinkThunk} from '../store/collections'
+import _ from 'lodash'
 
 const Types = {
   CARD: 'CARD'
@@ -71,7 +72,13 @@ function linkCard(props) {
         <div className="control" style={{opacity}}>
           <div className="tags has-addons">
             <a className="tag is-link" href={link.url}>
-              {link.title}
+              {link.title.length > 35
+                ? _.truncate(link.title, {
+                    length: 35,
+                    separator: /[.,-/!]? +/,
+                    omission: ''
+                  })
+                : link.title}
             </a>
             <a className="tag is-delete" onClick={() => deleteLink(link.id)} />
           </div>
