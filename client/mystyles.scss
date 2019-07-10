@@ -29,6 +29,22 @@ $control-border-width: 2px;
 $input-border-color: transparent;
 $input-shadow: none;
 
+//Styling for Tabs
+
+//When not active, nor hovering
+$tabs-link-color: white;
+$tabs-boxed-link-radius: 4px;
+
+//when hovering
+$tabs-boxed-link-hover-background-color: white;
+$tabs-link-hover-color: $mint;
+
+//when active
+$tabs-boxed-link-active-background-color: $mint-dark;
+$tabs-link-active-color: white;
+$tabs-boxed-link-active-border-bottom-color: white;
+$tabs-boxed-link-active-border-color: white;
+
 // Import only what you need from Bulma
 @import '../node_modules/bulma/sass/utilities/_all.sass';
 @import '../node_modules/bulma/sass/base/_all.sass';

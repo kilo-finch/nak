@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {SingleCollection, EditCollectionForm} from './index'
+import {SingleCollection, EditCollectionForm, OptionsMenu} from './index'
 import {deleteCollectionThunk} from '../store'
+import createCollectionForm from './createCollectionForm'
 
 const collectionContainer = {
   border: '2px #34c992 solid',
@@ -47,6 +48,15 @@ class TeamsCollection extends Component {
     }
   }
 
+  openForm = () => {
+    this.setSelectMode()
+    // document.getElementById('editForm').style.display = 'block'
+  }
+
+  closeForm = () => {
+    document.getElementById('editForm').style.display = 'none'
+  }
+
   render() {
     const {allTeamCollections} = this.props
     return (
@@ -54,45 +64,19 @@ class TeamsCollection extends Component {
         <div className="">
           {allTeamCollections.map(collection => (
             <div key={collection.id} style={collectionContainer}>
-              {this.state.isInEditMode ? (
-                <EditCollectionForm
-                  resetSelectMode={this.setSelectMode}
-                  collection={collection}
-                />
-              ) : (
-                <div className="level" style={collectionHeader}>
-                  <div className="level-left">
-                    <h3 className="level-item is-size-4 has-text-weight-bold">
-                      {collection.name}
-                    </h3>
-                  </div>
-                  <div className="level-right">
-                    <button
-                      onClick={this.setSelectMode}
-                      className="level-item button is-small"
-                    >
-                      ...
-                    </button>
-                    <div>
-                      {this.state.isInSelectMode && (
-                        <div>
-                          <button onClick={this.setEditMode} className="">
-                            Edit Title
-                          </button>
-                          <button
-                            onClick={() => {
-                              this.props.deleteCollection(collection.id)
-                            }}
-                            className=""
-                          >
-                            Delete Collection
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+              <div className="level" style={collectionHeader}>
+                <div className="level-left">
+                  <h3 className=" level-left is-size-4 has-text-weight-bold">
+                    {collection.name}
+                  </h3>
                 </div>
-              )}
+                <div className="level-right">
+                  <OptionsMenu
+                    collection={collection}
+                    deleteCollection={this.props.deleteCollection}
+                  />
+                </div>
+              </div>
               <SingleCollection collection={collection} />
             </div>
           ))}
