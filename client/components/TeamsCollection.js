@@ -11,7 +11,8 @@ const collectionContainer = {
   marginBottom: '25px',
   // backgroundColor: "#064372",
   height: '250px',
-  maxHeight: '600px'
+  maxHeight: '250px',
+  overflowY: 'auto'
 }
 
 const collectionHeader = {

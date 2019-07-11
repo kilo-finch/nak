@@ -4,6 +4,14 @@ import {connect} from 'react-redux'
 import '../style.css'
 import {EditCollectionForm} from '.'
 
+const openAll = (event, links) => {
+  links.forEach(link => {
+    event.preventDefault()
+    window.open(link.url, '_blank')
+  })
+  window.focus()
+}
+
 class OptionsMenu extends Component {
   constructor(props) {
     super(props)
@@ -90,12 +98,21 @@ class OptionsMenu extends Component {
           <button onClick={this.openForm} className="button">
             Edit Title
           </button>
+          <button
+            type="button"
+            onClick={() => openAll(event, collection.links)}
+            className="button is-pulled-left"
+            style={{marginLeft: '10px', marginRight: '10px'}}
+          >
+            Open All
+          </button>
           {!collection.userPersonalCollection && (
             <button
               onClick={() => {
                 deleteCollection(collection.id)
               }}
-              className="button"
+              className="button level-item"
+              style={{position: 'absolute', right: '200px', bottom: '0'}}
             >
               Delete Collection
             </button>
