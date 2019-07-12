@@ -69,7 +69,10 @@ class TeamsCollection extends Component {
                 <div className="level-left">
                   <h3
                     className=" level-left is-size-4 has-text-weight-bold"
-                    style={{marginLeft: '8px'}}
+                    style={{
+                      marginLeft: '8px',
+                      textShadow: '2px 2px 5px #064372'
+                    }}
                   >
                     {collection.userPersonalCollection ? '☆ ' : ''}
                     {collection.name}

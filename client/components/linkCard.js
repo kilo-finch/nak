@@ -83,8 +83,9 @@ function linkCard(props) {
             <a
               className="tag is-link level-item has-text-weight-semibold"
               href={link.url}
+              style={{textShadow: '1px 1px 4px #064372'}}
             >
-                {link.title.length > 35
+              {link.title.length > 35
                 ? _.truncate(link.title, {
                     length: 35,
                     separator: /[.,-/!]? +/,
