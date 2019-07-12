@@ -126,9 +126,11 @@ router.delete('/:teamId', async (req, res, next) => {
     try {
       const teamId = +req.params.teamId
       let destroyedTeam = await Team.destroy({where: {id: teamId}})
-      //test if this works
-      // io.to(teamId).emit('delete_team', teamId)
-      // io.sockets.clients(teamId).forEach(user => user.leave(teamId))
+      io.to(teamId).emit('get_all_teams')
+      const socketsInRoom = Object.keys(
+        io.sockets.adapter.rooms[teamId].sockets
+      ).map(socketIdToSocket)
+      socketsInRoom.forEach(userSocket => userSocket.leave(teamId))
       res.sendStatus(204).send(destroyedTeam)
     } catch (error) {
       throw error
