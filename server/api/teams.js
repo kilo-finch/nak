@@ -32,7 +32,6 @@ router.get('/', async (req, res, next) => {
           }
         }
       })
-      //connecting the user to each team room
       allUserTeams.forEach(team => {
         socket.join(team.id)
       })
