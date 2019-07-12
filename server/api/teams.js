@@ -40,7 +40,6 @@ router.get('/', async (req, res, next) => {
           socket.join(team.id)
         })
       }
-
       res.send(allUserTeams)
     } catch (error) {
       next(error)

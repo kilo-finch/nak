@@ -98,8 +98,6 @@ router.put('/:collectionId', async (req, res, next) => {
           returning: true
         }
       )
-
-      //socket here
       io.to(collection.teamId).emit('get_team', collection.teamId)
       res.send(updatedCollection)
     } catch (error) {
