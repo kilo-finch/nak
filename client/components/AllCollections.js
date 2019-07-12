@@ -67,6 +67,7 @@ class AllCollections extends Component {
                     key={team.id}
                     type="button"
                     className="has-text-weight-bold"
+                    style={{textShadow: '2px 2px 5px #064372'}}
                   >
                     {`${team.name}`}
                   </a>
