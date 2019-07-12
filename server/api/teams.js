@@ -22,9 +22,7 @@ module.exports = {router, setIO}
 
 router.get('/', async (req, res, next) => {
   if (req.user) {
-    if (!userIdToSocketId[req.user.id]) {
-      userIdToSocketId[req.user.id] = socket.id
-    }
+    userIdToSocketId[req.user.id] = socket.id
     try {
       const allUserTeams = await Team.findAll({
         include: {
@@ -34,7 +32,6 @@ router.get('/', async (req, res, next) => {
           }
         }
       })
-      //connecting the user to each team room
       allUserTeams.forEach(team => {
         socket.join(team.id)
       })

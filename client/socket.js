@@ -4,7 +4,8 @@ import store, {
   moveLinks,
   getAllLinksThunk,
   deleteTeamThunk,
-  allTeamsThunk
+  allTeamsThunk,
+  getSingleTeam
 } from './store'
 
 const socket = io(window.location.origin)
@@ -15,6 +16,10 @@ socket.on('connect', () => {
 
 socket.on('get_team', async teamId => {
   await store.dispatch(selectedCollectionThunk(teamId))
+})
+
+socket.on('get_single_team', teamId => {
+  store.dispatch(getSingleTeam(teamId))
 })
 
 socket.on('delete_team', async teamId => {
