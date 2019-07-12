@@ -82,7 +82,8 @@ class AllCollections extends Component {
             {this.props.teams.length > 0 &&
             this.state.selectedTeam !== this.props.teams[0].id ? (
               <button
-                className="button"
+                className="button is-danger is-outlined level-item is-size-6 has-text-weight-bold"
+                id="delete-button"
                 onClick={() => this.props.deleteTeam(this.state.selectedTeam)}
               >
                 Delete Team
