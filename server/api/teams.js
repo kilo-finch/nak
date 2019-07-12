@@ -22,7 +22,9 @@ module.exports = {router, setIO}
 
 router.get('/', async (req, res, next) => {
   if (req.user) {
-    userIdToSocketId[req.user.id] = socket.id
+    if (!userIdToSocketId[req.user.id] && socket) {
+      userIdToSocketId[req.user.id] = socket.id
+    }
     try {
       const allUserTeams = await Team.findAll({
         include: {
@@ -32,10 +34,12 @@ router.get('/', async (req, res, next) => {
           }
         }
       })
-      allUserTeams.forEach(team => {
-        socket.join(team.id)
-      })
-
+      //connecting the user to each team room
+      if (socket) {
+        allUserTeams.forEach(team => {
+          socket.join(team.id)
+        })
+      }
       res.send(allUserTeams)
     } catch (error) {
       next(error)
@@ -48,7 +52,8 @@ router.get('/', async (req, res, next) => {
 router.get('/:teamId', async (req, res, next) => {
   if (req.user) {
     try {
-      const singleTeam = await Team.findByPk(+req.user.params.teamId)
+      // const singleTeam = await Team.findByPk(+req.user.params.teamId)
+      const singleTeam = await Team.findByPk(+req.params.teamId)
       res.send(singleTeam)
     } catch (error) {
       next(error)

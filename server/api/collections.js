@@ -63,12 +63,13 @@ router.get('/:teamId', async (req, res, next) => {
     try {
       const selectedCollection = await Collection.findAll({
         include: {
-          model: Links
+          model: Links,
+          order: ['orderFloat', 'ASC']
         },
         where: {
           teamId: req.params.teamId
         },
-        order: [[{model: Links}, 'orderFloat', 'ASC']]
+        order: [['id', 'ASC'], [{model: Links}, 'orderFloat', 'ASC']]
       })
       res.send(selectedCollection)
     } catch (error) {
