@@ -94,6 +94,7 @@ class OptionsMenu extends Component {
         <div
           className="level-item menu-popup"
           id={`options-menu${collection.id}`}
+          style={{display: 'none'}}
         >
           <button onClick={this.openForm} className="button">
             Edit Title
