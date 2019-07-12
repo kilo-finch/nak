@@ -22,7 +22,7 @@ module.exports = {router, setIO}
 
 router.get('/', async (req, res, next) => {
   if (req.user) {
-    if (!userIdToSocketId[req.user.id] && socket) {
+    if (socket) {
       userIdToSocketId[req.user.id] = socket.id
     }
     try {
