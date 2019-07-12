@@ -6,14 +6,15 @@ import {
   AddTeamForm
 } from './index'
 import {connect} from 'react-redux'
-import {selectedCollectionThunk, allTeamsThunk} from '../store'
+import {selectedCollectionThunk, allTeamsThunk, deleteTeamThunk} from '../store'
 import {Link, Route} from 'react-router-dom'
 
 class AllCollections extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentSelection: null
+      currentSelection: null,
+      currentTeam: null
     }
   }
 
@@ -23,7 +24,7 @@ class AllCollections extends Component {
 
   async componentDidUpdate(prevProps) {
     if (this.props.teams !== prevProps.teams) {
-      this.props.getSelectedCollection(this.props.teams[0].id)
+      await this.props.getSelectedCollection(this.props.teams[0].id)
       this.selectCollection(this.props.teams[0].id)
     }
   }
@@ -32,6 +33,7 @@ class AllCollections extends Component {
     let selectedCollection = document.getElementsByClassName(
       `teamName${selection}`
     )[0]
+    let selectedTeam = selection
     if (
       this.state.currentSelection !== null &&
       this.state.currentSelection.className !== selectedCollection.className
@@ -41,7 +43,7 @@ class AllCollections extends Component {
     } else if (this.state.currentSelection === null) {
       selectedCollection.classList.toggle('is-active')
     }
-    this.setState({currentSelection: selectedCollection})
+    this.setState({currentSelection: selectedCollection, selectedTeam})
     this.props.getSelectedCollection(selection)
   }
 
@@ -69,13 +71,24 @@ class AllCollections extends Component {
                     className="has-text-weight-bold"
                   >
                     {`${team.name}`}
-                  </a>
+                  </a>{' '}
                 </li>
               ))}
               <li>
                 <AddTeamForm />
-              </li>
+              </li>{' '}
             </ul>
+            {this.props.teams.length > 0 &&
+            this.state.selectedTeam !== this.props.teams[0].id ? (
+              <button
+                className="button"
+                onClick={() => this.props.deleteTeam(this.state.selectedTeam)}
+              >
+                Delete Team
+              </button>
+            ) : (
+              ''
+            )}
           </div>
         ) : (
           <h3>Still Loading</h3>
@@ -107,7 +120,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getSelectedCollection: teamId => dispatch(selectedCollectionThunk(teamId)),
-    getAllTeams: () => dispatch(allTeamsThunk())
+    getAllTeams: () => dispatch(allTeamsThunk()),
+    deleteTeam: teamId => dispatch(deleteTeamThunk(teamId))
   }
 }
 
