@@ -4,7 +4,7 @@ import axios from 'axios'
 import store from '.'
 
 /**
- * INITIAL STATE
+ * INITIAL STATE SELECTED COLLECTION IS TEAM
  */
 const initialState = {
   selectedCollection: [],
