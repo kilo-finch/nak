@@ -56,6 +56,12 @@ $input-border-color: $blue-dark;
 //Tags field
 $tag-color: #be062e;
 
+//Delete Button
+.delete-button {
+  $button-color: $mint;
+  $button-background-color: white;
+}
+
 // Import only what you need from Bulma
 @import '../node_modules/bulma/sass/utilities/_all.sass';
 @import '../node_modules/bulma/sass/base/_all.sass';
