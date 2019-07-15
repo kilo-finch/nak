@@ -6,7 +6,9 @@ Nak is an interactive tab based productivity platform meant to better organize o
 
 Technologies Utilized: JavaScript, React, Redux, Node.js, Sockets.io, SQL, PostgreSQL, Chrome API and Extension, OAuth, Bulma, lodash, React D&D, Sass.
 
-Please download our chrome extension here: [Chrome Extension](https://github.com/kilo-finch/chromeextension)
+Please download our chrome extension here: [Chrome Web Store](https://chrome.google.com/webstore/detail/nak/pcdpnkbhkokjcjanmbophfdledelkoao)
+
+Chrome extension on GitHub: [GitHub](https://github.com/kilo-finch/chromeextension)
 
 Don't forget to mount the Extension! Have Fun!
 
