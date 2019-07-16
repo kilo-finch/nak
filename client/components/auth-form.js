@@ -11,8 +11,46 @@ const AuthForm = props => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name} />
-      <a href="/auth/google">{displayName} with Google</a>
+      <h1
+        className="is-size-1"
+        style={{
+          color: '#34c992',
+          fontWeight: 'bolder',
+          fontFamily: 'Helvetica',
+          paddingInlineStart: '63px'
+        }}
+      >
+        A new way to keep your tabs safe <br />and organized.
+      </h1>
+      <br />
+      <br />{' '}
+      <div
+        id="divForLogin"
+        style={{paddingLeft: '63px', paddingTop: '75px', width: '200px'}}
+      >
+        <form onSubmit={handleSubmit} name={name} />
+        <button
+          type="button"
+          className="button is-primary is-outlined level-item is-size-6 has-text-weight-bold"
+        >
+          <a href="/auth/google">{displayName} with Google</a>
+        </button>
+      </div>
+      {/* <div
+        style={{float: 'right', paddingRight: '100px', paddingBottom: '300px'}}
+      >
+        <video
+          width="640"
+          height="480"
+          controls="controls"
+          poster="image"
+          autoPlay="autoplay"
+          loop="loop"
+        >
+          <source src="./../../public/video/webintro.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div> */}
     </div>
   )
 }
