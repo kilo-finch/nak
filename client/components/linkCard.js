@@ -84,6 +84,8 @@ function linkCard(props) {
               className="tag is-link level-item has-text-weight-semibold"
               href={link.url}
               style={{textShadow: '1px 1px 4px #064372'}}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               {link.title.length > 35
                 ? _.truncate(link.title, {

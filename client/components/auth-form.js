@@ -12,15 +12,16 @@ const AuthForm = props => {
   return (
     <div>
       <h1
-        className="is-size-1"
+        className=""
         style={{
           color: '#34c992',
           fontWeight: 'bolder',
           fontFamily: 'Helvetica',
-          paddingInlineStart: '63px'
+          paddingInlineStart: '63px',
+          fontSize: '5em'
         }}
       >
-        A new way to keep your tabs safe <br />and organized.
+        A new way to keep your tabs<br />safe and organized.
       </h1>
       <br />
       <br />{' '}
