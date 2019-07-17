@@ -23,35 +23,67 @@ const AuthForm = props => {
       >
         A new way to keep your tabs<br />safe and organized.
       </h1>
-      <br />
-      <br />{' '}
       <div
         id="divForLogin"
-        style={{paddingLeft: '63px', paddingTop: '75px', width: '200px'}}
+        style={{paddingLeft: '63px', paddingTop: '70px', width: '200px'}}
       >
         <form onSubmit={handleSubmit} name={name} />
         <button
           type="button"
-          className="button is-primary is-outlined level-item is-size-6 has-text-weight-bold"
+          className="button is-primary is-outlined level-item is-size-5 has-text-weight-bold"
         >
           <a href="/auth/google">{displayName} with Google</a>
         </button>
       </div>
-      {/* <div
-        style={{float: 'right', paddingRight: '100px', paddingBottom: '300px'}}
-      >
-        <video
+      <div className="level" style={{marginTop: '50px', marginBottom: '100px'}}>
+        {/* <video
           width="640"
           height="480"
           controls="controls"
           poster="image"
-          autoPlay="autoplay"
-          loop="loop"
+          autoPlay="true"
+          loop="true"
+          muted="true"
         >
-          <source src="./../../public/video/webintro.mp4" type="video/mp4" />
+          <source src="/video/webintro.mp4" type="video/mp4" />
           Your browser does not support the video tag.
-        </video>
-      </div> */}
+        </video> */}
+        <div
+          className="level-item"
+          style={{
+            width: '250px',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'align-items'
+          }}
+        >
+          <p
+            className="is-size-4 is-primary has-text-centered level-item"
+            style={{
+              color: '#34c992',
+              fontWeight: 'bolder',
+              fontFamily: 'Helvetica',
+              fontSize: '1.2em',
+              marginRight: '25px'
+            }}
+          >
+            Download our Chrome Extension:
+          </p>
+          <button
+            type="button"
+            className="button is-primary is-outlined is-size-6 has-text-weight-bold"
+            style={{}}
+          >
+            <a
+              href="https://chrome.google.com/webstore/detail/nak/pcdpnkbhkokjcjanmbophfdledelkoao"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Download
+            </a>
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
