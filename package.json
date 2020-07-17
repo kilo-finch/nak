@@ -49,7 +49,7 @@
     "express": "^4.16.4",
     "express-session": "^1.15.1",
     "history": "^4.9.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",
